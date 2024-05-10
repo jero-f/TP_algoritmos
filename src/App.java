@@ -1,10 +1,10 @@
-
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
         String filePath = "./recursos/productos.csv";
-        Csv_reader df = new Csv_reader(filePath);
-        for (String[] fields : df.datos) {
+         List<String[]> datos =  Csv_reader.lector(filePath);
+        for (String[] fields : datos) {
             for (String field : fields) {
                 System.out.print(field + ", ");
             }

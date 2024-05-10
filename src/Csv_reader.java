@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Csv_reader {
-    List<String[]> datos = new ArrayList<>();
+    
 
-    public Csv_reader(String filePath) {
+    public static List<String[]> lector(String filePath) {
+        List<String[]> datos = new ArrayList<>();
         try {
             File file = new File(filePath);
             Scanner scanner = new Scanner(file);
@@ -25,5 +26,6 @@ public class Csv_reader {
         } catch (FileNotFoundException e) {
             System.err.println("Archivo no encontrado: " + e.getMessage());
         }
+        return datos;
     }
 }
