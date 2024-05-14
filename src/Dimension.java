@@ -11,8 +11,8 @@ public class Dimension {
         String id_dimension = df_significados.get(0)[1]; // que id es el que va a ser usado
         int indice_en_df_ventas = -1;
 
-        for(int i = 0; i < df_significados.get(0).length; i++){ // busco en que columna está ese id en df_ventas
-            if (df_significados.get(0)[i].equals(id_dimension)){
+        for(int i = 0; i < df_ventas.get(0).length; i++){ // busco en que columna está ese id en df_ventas
+            if (df_ventas.get(0)[i].equals(id_dimension)){
                 indice_en_df_ventas = i;
             }
         }
