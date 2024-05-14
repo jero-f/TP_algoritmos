@@ -18,7 +18,7 @@ public class Csv_reader {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 // Dividir la línea en campos usando coma como delimitador
-                String[] fields = line.split(",");
+                String[] fields = line.split(";");
                 datos.add(fields);
             }
             scanner.close(); // Cerrar el scanner al finalizar la lectura
