@@ -21,7 +21,7 @@ public class Dimension {
         for( int j = 1; j < df_ventas.size(); j++ ){
             for( String[] fila_significados : df_significados){
                 if( df_ventas.get(j)[indice_en_df_ventas].equals(fila_significados[0])){
-                    Agregar.agregarValor(dicc_id, fila_significados[fila_significados.length - 1], Integer.parseInt(df_ventas.get(j)[indice_en_df_ventas]));
+                    Agregar.agregarValor(dicc_id, fila_significados[fila_significados.length - 1], j-1);
                 }
             }
         }

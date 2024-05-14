@@ -27,10 +27,15 @@ public class App {
 //        for (String clave : dicc_fechas.dicc_id.keySet()) {
 //            System.out.println(clave);
 //        }
-        List<Integer> filas_con_id_fecha_0 = dicc_fechas.dicc_id.get("2020");
-        for( int fila : filas_con_id_fecha_0){
-            System.out.println(fila);
+        List<Integer> filas_con_id_europa = dicc_puntos_venta.dicc_id.get("Europe");
+        List<Integer> filas_con_id_usa = dicc_puntos_venta.dicc_id.get("North America");
+        List<Integer> filas_con_id_pacifico = dicc_puntos_venta.dicc_id.get("Pacific");
+        System.out.println(filas_con_id_europa.size());
+        System.out.println(filas_con_id_usa.size());
+        System.out.println(filas_con_id_pacifico.size());
+        //for( int fila : filas_con_id_fecha_0){
+        //    System.out.println(fila);
             //System.out.println(); // Agrega un salto de línea después de imprimir cada línea
-        }
+        //}
     }
 }
