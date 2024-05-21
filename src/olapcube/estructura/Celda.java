@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Representa una celda de un cubo OLAP.
@@ -40,6 +41,10 @@ public class Celda {
     @Override
     public String toString() {
         return "Celda [hechos=" + hechos.keySet() + "]";
+    }
+
+    public Set<String> getHechos(){
+        return hechos.keySet();
     }
 
     /**

@@ -11,6 +11,7 @@ import olapcube.Proyeccion;
 import olapcube.configuration.ConfigCubo;
 import olapcube.configuration.ConfigDimension;
 import olapcube.metricas.Count;
+import olapcube.metricas.Maximo;
 import olapcube.metricas.Medida;
 import olapcube.metricas.Minimo;
 import olapcube.metricas.Suma;
@@ -32,6 +33,9 @@ public class Cubo {
         // TODO: Externalizar esta configuracion
         medidas = new HashMap<>();
         medidas.put("suma", new Suma());
+        medidas.put("count", new Count());
+        medidas.put("maximo", new Maximo());
+        medidas.put("minimo", new Minimo());
     }
 
     /**
@@ -102,8 +106,23 @@ public class Cubo {
 
     public void agregarCelda(Celda celda) {
         // TODO: Validar que la celda tenga los mismos hechos que las celdas anteriores
+        if (celdas.size() != 0){
+            Boolean mismos_hechos = true;
+            Set<String> hechos_celda =  celda.getHechos();
+            for (String hecho : nombresHechos){
+                if (!(hechos_celda.contains(hecho))){
+                    mismos_hechos = false;
+                }
+            }
+            if (mismos_hechos == false){
+                throw new IllegalArgumentException("Celda con hechos diferentes a las demas");
+            }
+        
         // TODO: Validar que la celda tenga la misma cantidad de hechos que los hechos del cubo
+            if ()
+
         // TODO: Validar que la celda tenga la misma cantidad de valores para cada hecho
+        }
         celdas.add(celda);
     }
 
