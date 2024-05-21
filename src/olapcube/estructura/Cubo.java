@@ -10,7 +10,9 @@ import java.util.Set;
 import olapcube.Proyeccion;
 import olapcube.configuration.ConfigCubo;
 import olapcube.configuration.ConfigDimension;
+import olapcube.metricas.Count;
 import olapcube.metricas.Medida;
+import olapcube.metricas.Minimo;
 import olapcube.metricas.Suma;
 
 /**
