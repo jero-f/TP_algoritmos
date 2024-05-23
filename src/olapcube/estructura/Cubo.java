@@ -106,22 +106,28 @@ public class Cubo {
 
     public void agregarCelda(Celda celda) {
         // TODO: Validar que la celda tenga los mismos hechos que las celdas anteriores
-        if (celdas.size() != 0){
-            Boolean mismos_hechos = true;
-            Set<String> hechos_celda =  celda.getHechos();
-            for (String hecho : nombresHechos){
-                if (!(hechos_celda.contains(hecho))){
-                    mismos_hechos = false;
-                }
+        Boolean mismos_hechos = true;
+        Set<String> hechos_celda =  celda.getHechos();
+        for (String hecho : nombresHechos){
+            if (!(hechos_celda.contains(hecho))){
+                mismos_hechos = false;
             }
-            if (mismos_hechos == false){
-                throw new IllegalArgumentException("Celda con hechos diferentes a las demas");
-            }
-        
+        }
+        if (mismos_hechos == false){
+            throw new IllegalArgumentException("Celda con hechos diferentes a las demas");
+        }
+    
         // TODO: Validar que la celda tenga la misma cantidad de hechos que los hechos del cubo
-            if ()
+        if (hechos_celda.size() != nombresHechos.size()){
+            throw new IllegalArgumentException("Celda con cantidad de hechos diferente a las demas");
+        }
 
         // TODO: Validar que la celda tenga la misma cantidad de valores para cada hecho
+        int cant = celda.getValores(nombresHechos.get(0)).size();
+        for (String hecho : nombresHechos){
+            if (cant != celda.getValores(hecho).size()){
+                throw new IllegalArgumentException("Celda con distinta cantidad de valores para cada hecho");
+            }
         }
         celdas.add(celda);
     }

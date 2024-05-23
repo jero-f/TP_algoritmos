@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -43,10 +44,10 @@ public class Celda {
         return "Celda [hechos=" + hechos.keySet() + "]";
     }
 
-    public Set<String> getHechos(){
-        return hechos.keySet();
+    public Set<String> getHechos() {
+        // Crear una nueva copia del conjunto de claves
+        return new HashSet<>(hechos.keySet());
     }
-
     /**
      * Obtiene los valores de un hecho
      * 
