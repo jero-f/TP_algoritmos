@@ -35,7 +35,7 @@ public class Proyeccion {
             }
         }
         if (hecho_esta == false){
-            throw new IllegalArgumentException("nombre hecho no encontrado: " + nombre_hecho);
+            throw new IllegalArgumentException("nombre del hecho no encontrado: " + nombre_hecho);
         }
         this.hecho = nombre_hecho;    // Selecciona el primer hecho por defecto
         
@@ -47,10 +47,11 @@ public class Proyeccion {
             }
         }
         if (medida_esta == false){
-            throw new IllegalArgumentException("nombre medida no encontrado: " + nombre_medida);
+            throw new IllegalArgumentException("nombre de la medida no encontrado: " + nombre_medida);
         }
         this.medida = nombre_medida;         // Selecciona la primera medida por defecto
     }
+    
 
     public void seleccionarHecho(String hecho) {
         this.hecho = hecho;

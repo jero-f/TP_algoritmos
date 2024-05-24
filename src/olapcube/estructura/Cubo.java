@@ -191,4 +191,11 @@ public class Cubo {
     public Proyeccion proyectar(String nombre_hecho, String medida) {
         return new Proyeccion(this, nombre_hecho, medida);
     }
+
+
+
+//    public Cubo slice(String dimension, String valor){
+
+//    }
+
 }

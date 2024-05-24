@@ -40,7 +40,7 @@ public class AppCubo {
         proyeccion.print("POS");
 
         // Mostrar Dimensiones POS vs Fechas (hecho: cantidad)
-        proyeccion.seleccionarHecho("costo");
+        proyeccion.seleccionarHecho("cantidad");
         proyeccion.print("POS", "Fechas");
     }
     
