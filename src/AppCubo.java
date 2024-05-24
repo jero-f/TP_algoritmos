@@ -34,7 +34,7 @@ public class AppCubo {
         System.out.println("Cubo creado: " + cubo);
 
         // Proyecciones
-        Proyeccion proyeccion = cubo.proyectar("costo","suma");
+        Proyeccion proyeccion = cubo.proyectar("valor_total","suma");
         
         // Mostrar Dimension POS (hecho: default)
         proyeccion.print("POS");
