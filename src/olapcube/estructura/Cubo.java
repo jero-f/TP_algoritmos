@@ -193,9 +193,15 @@ public class Cubo {
     }
 
 
-
-//    public Cubo slice(String dimension, String valor){
-
-//    }
-
+    /** 
+    public Cubo slice(String dimension, String valor){
+        Cubo cubo2 = new Cubo();
+        for (String dim : dimensiones.keySet()){
+            if (!dimension.equals(dim)){
+            cubo2.agregarDimension(dimensiones.get(dim));
+            }
+        }
+        return cubo2;
+    }
+    */
 }

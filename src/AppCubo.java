@@ -1,5 +1,3 @@
-
-
 import olapcube.Proyeccion;
 import olapcube.configuration.ConfigCubo;
 import olapcube.configuration.ConfigDimension;
