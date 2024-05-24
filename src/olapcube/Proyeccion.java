@@ -25,10 +25,31 @@ public class Proyeccion {
      * 
      * @param cubo Cubo sobre el que se realiza la proyeccion
      */
-    public Proyeccion(Cubo cubo) {
+    public Proyeccion(Cubo cubo, String nombre_hecho, String nombre_medida) {
         this.cubo = cubo;
-        this.hecho = cubo.getNombresHechos().get(0);    // Selecciona el primer hecho por defecto
-        this.medida = cubo.getMedidas().get(0);         // Selecciona la primera medida por defecto
+    
+        boolean hecho_esta = false;
+        for (String hecho : cubo.getNombresHechos()){
+            if (hecho.equals(nombre_hecho)){
+                hecho_esta = true;
+            }
+        }
+        if (hecho_esta == false){
+            throw new IllegalArgumentException("nombre hecho no encontrado: " + nombre_hecho);
+        }
+        this.hecho = nombre_hecho;    // Selecciona el primer hecho por defecto
+        
+        
+        boolean medida_esta = false;
+        for (String medida : cubo.getMedidas()){
+            if (medida.equals(nombre_medida)){
+                medida_esta = true;
+            }
+        }
+        if (medida_esta == false){
+            throw new IllegalArgumentException("nombre medida no encontrado: " + nombre_medida);
+        }
+        this.medida = nombre_medida;         // Selecciona la primera medida por defecto
     }
 
     public void seleccionarHecho(String hecho) {

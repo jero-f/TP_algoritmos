@@ -34,7 +34,7 @@ public class AppCubo {
         System.out.println("Cubo creado: " + cubo);
 
         // Proyecciones
-        Proyeccion proyeccion = cubo.proyectar();
+        Proyeccion proyeccion = cubo.proyectar("cantidad","count");
         
         // Mostrar Dimension POS (hecho: default)
         proyeccion.print("POS");

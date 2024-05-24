@@ -106,7 +106,7 @@ public class Cubo {
 
     public void agregarCelda(Celda celda) {
         // TODO: Validar que la celda tenga los mismos hechos que las celdas anteriores
-        Boolean mismos_hechos = true;
+        boolean mismos_hechos = true;
         Set<String> hechos_celda =  celda.getHechos();
         for (String hecho : nombresHechos){
             if (!(hechos_celda.contains(hecho))){
@@ -188,7 +188,7 @@ public class Cubo {
         return nuevo;
     }
 
-    public Proyeccion proyectar() {
-        return new Proyeccion(this);
+    public Proyeccion proyectar(String nombre_hecho, String medida) {
+        return new Proyeccion(this, nombre_hecho, medida);
     }
 }
