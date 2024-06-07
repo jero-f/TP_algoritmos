@@ -46,6 +46,31 @@ public class Dimension {
         return dim;
     }
 
+    public Dimension copiar() {
+        Dimension nueva = new Dimension(this.nombre);
+        nueva.valoresToCeldas = new HashMap<>();
+        for (String valor : this.valoresToCeldas.keySet()) {
+            nueva.valoresToCeldas.put(valor, this.valoresToCeldas.get(valor));
+        }
+        nueva.idToValores = this.idToValores;
+        nueva.columnaFkHechos = this.columnaFkHechos;
+    
+        return nueva;
+    }    
+
+    public void filtrar(String valor) {
+        filtrar(new String[]{valor});
+    }
+
+    public void filtrar(String[] valores){
+        HashMap<String, Set<Integer>> nuevosValores = new HashMap<>();
+        for (String valor : valores) {
+            nuevosValores.put(valor, valoresToCeldas.get(valor));
+        }
+            valoresToCeldas = nuevosValores;
+    }
+
+
     @Override
     public String toString() {
         return "Dimension [nombre=" + nombre + "]";

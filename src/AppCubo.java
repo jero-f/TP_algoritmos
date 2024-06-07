@@ -32,7 +32,7 @@ public class AppCubo {
         System.out.println("Cubo creado: " + cubo);
 
         // Proyecciones
-        Proyeccion proyeccion = cubo.proyectar("valor_total","suma");
+        Proyeccion proyeccion = cubo.proyectar("costo","suma");
         
         // Mostrar Dimension POS (hecho: default)
         proyeccion.print("POS");
@@ -40,6 +40,9 @@ public class AppCubo {
         // Mostrar Dimensiones POS vs Fechas (hecho: cantidad)
         proyeccion.seleccionarHecho("cantidad");
         proyeccion.print("POS", "Fechas");
+
+        Cubo cuboDice = cubo.dice("Fechas", new String[]{"2017","2018"});
+        cuboDice.dice("POS", new String[]{"Canada", "France"}).proyectar("valor_total","suma").print("POS","Fechas");
     }
     
 }
