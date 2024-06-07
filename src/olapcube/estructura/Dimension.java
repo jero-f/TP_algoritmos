@@ -1,7 +1,10 @@
 package olapcube.estructura;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,9 +15,10 @@ import olapcube.configuration.ConfigDimension;
  */
 public class Dimension {
     private String nombre;                              // Nombre de la dimension
-    private Map<String, Set<Integer>> valoresToCeldas;  // Mapeo de valores de la dimensión a celdas en el cubo
-    private Map<Integer, String> idToValores;           // Mapeo de ids (pk) de la dimensión a valores
-    private int columnaFkHechos;                        // Columna que contiene la clave foránea en la tabla de los hechos
+    private List<Map<String, Set<Integer>>> valoresToCeldas;  // Mapeo de valores de la dimensión a celdas en el cubo
+    private List<Map<Integer, String>> idToValores;           // Mapeo de ids (pk) de la dimensión a valores
+    private int columnaFkHechos;                    // Columna que contiene la clave foránea en la tabla de los hechos
+    private int nivelActual = 0;
     
     /**
      * Constructor de la clase
@@ -23,8 +27,8 @@ public class Dimension {
      */
     private Dimension(String nombre) {
         this.nombre = nombre;
-        valoresToCeldas = new HashMap<>();
-        idToValores = new HashMap<>();
+        valoresToCeldas = new ArrayList<>();
+        idToValores = new ArrayList<>();
     }
 
     /**
@@ -36,15 +40,45 @@ public class Dimension {
     public static Dimension crear(ConfigDimension configDimension) {
         Dimension dim = new Dimension(configDimension.getNombre());
         dim.columnaFkHechos = configDimension.getColumnaFkHechos();
+
         for (String[] datos : configDimension.getDatasetReader().read()) {
             int pkDimension = Integer.parseInt(datos[configDimension.getColumnaKey()]);
             String valor = datos[configDimension.getColumnaValor()];
             dim.idToValores.put(pkDimension, valor);
+
+            //TODO: CREO que con un for aca sobre los niveles de las dimensiones podemos jerarquizar bien
+            // crear los diccionarios de los niveles para valoreToCeldas
+            // armar bien idToValores con los nombres bien hechos
             dim.valoresToCeldas.put(valor, new HashSet<>());
         }
 
         return dim;
     }
+
+    public Dimension copiar() {
+        Dimension nueva = new Dimension(this.nombre);
+        nueva.valoresToCeldas = new HashMap<>();
+        for (String valor : this.valoresToCeldas.keySet()) {
+            nueva.valoresToCeldas.put(valor, this.valoresToCeldas.get(valor));
+        }
+        nueva.idToValores = this.idToValores;
+        nueva.columnaFkHechos = this.columnaFkHechos;
+    
+        return nueva;
+    }    
+
+    public void filtrar(String valor) {
+        filtrar(new String[]{valor});
+    }
+
+    public void filtrar(String[] valores){
+        HashMap<String, Set<Integer>> nuevosValores = new HashMap<>();
+        for (String valor : valores) {
+            nuevosValores.put(valor, valoresToCeldas.get(valor));
+        }
+            valoresToCeldas = nuevosValores;
+    }
+
 
     @Override
     public String toString() {
@@ -81,6 +115,7 @@ public class Dimension {
         if (!idToValores.containsKey(idValor)) {
             throw new IllegalArgumentException("El id " + idValor + " del valor no existe en la dimension " + nombre);
         }
+        //TODO: iterar sobre cada nivel de valoresToCeldas haciendo lo mismo
         valoresToCeldas.get(idToValores.get(idValor)).add(indiceCelda);
     }
 }

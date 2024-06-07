@@ -1,5 +1,3 @@
-
-
 import olapcube.Proyeccion;
 import olapcube.configuration.ConfigCubo;
 import olapcube.configuration.ConfigDimension;
@@ -40,8 +38,11 @@ public class AppCubo {
         proyeccion.print("POS");
 
         // Mostrar Dimensiones POS vs Fechas (hecho: cantidad)
-        proyeccion.seleccionarHecho("costo");
+        proyeccion.seleccionarHecho("cantidad");
         proyeccion.print("POS", "Fechas");
+
+        Cubo cuboDice = cubo.dice("Fechas", new String[]{"2017","2018"});
+        cuboDice.dice("POS", new String[]{"Canada", "France"}).proyectar("valor_total","suma").print("POS","Fechas");
     }
     
 }

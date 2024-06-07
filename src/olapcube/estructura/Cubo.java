@@ -56,7 +56,7 @@ public class Cubo {
         cubo.nombresHechos = List.of(config.getHechos().getNombresHechos());
 
         int indiceCelda = 0;
-        for (String[] datos : config.getHechos().getDatasetReader().read()) {
+        for (String[] datos : config.getHechos().getDatasetReader().read()) {            
             Celda celda = new Celda();
             for (String hecho : cubo.nombresHechos) {
                 int columnaHecho = config.getHechos().getColumnaHecho(hecho);
@@ -64,8 +64,12 @@ public class Cubo {
             }
             cubo.agregarCelda(celda);
 
+
             // Agrega la celda a las dimensiones
             for (Dimension dimension : cubo.dimensiones.values()) {
+            //TODO: CREO que con un for aca sobre los niveles de las dimensiones podemos jerarquizar bien
+            //guardar en cada diccionario de la lista de valoresToCeldas el indice celda. modificar agregarHecho para que
+            // agregue los hechos a todos los niveles de valoresToCeldas
                 int columnaFkHechos = dimension.getColumnaFkHechos();
                 int fk = Integer.parseInt(datos[columnaFkHechos]);
                 dimension.agregarHecho(fk, indiceCelda);
@@ -191,4 +195,5 @@ public class Cubo {
     public Proyeccion proyectar(String nombre_hecho, String medida) {
         return new Proyeccion(this, nombre_hecho, medida);
     }
+
 }
