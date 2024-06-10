@@ -31,18 +31,25 @@ public class AppCubo {
         Cubo cubo = Cubo.crearFromConfig(config);
         System.out.println("Cubo creado: " + cubo);
 
+        //cubo.drillDown("POS");
+        //cubo.drillDown("POS");
+        //cubo.drillDown("Productos");
+        //cubo.drillDown("Fechas");
         // Proyecciones
-        Proyeccion proyeccion = cubo.proyectar("costo","suma");
+        //Proyeccion proyeccion = cubo.proyectar("cantidad","count");
         
         // Mostrar Dimension POS (hecho: default)
-        proyeccion.print("POS");
+        //proyeccion.print("POS");
 
         // Mostrar Dimensiones POS vs Fechas (hecho: cantidad)
-        proyeccion.seleccionarHecho("cantidad");
-        proyeccion.print("POS", "Fechas");
+        //proyeccion.seleccionarHecho("cantidad");
+        //proyeccion.print("POS", "Fechas");
 
-        Cubo cuboDice = cubo.dice("Fechas", new String[]{"2017","2018"});
-        cuboDice.dice("POS", new String[]{"Canada", "France"}).proyectar("valor_total","suma").print("POS","Fechas");
-    }
+        
+        Cubo cuboDice = cubo.dice("Fechas", new String[]{" | 2017"," | 2018"});
+        cuboDice.proyectar("valor_total","suma").print("POS","Fechas");
+        //cuboDice.dice("POS", new String[]{"Canada", "France"}).proyectar("valor_total","suma").print("POS","Fechas");
+    
+        }
     
 }

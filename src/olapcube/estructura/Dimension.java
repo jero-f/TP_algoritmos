@@ -1,6 +1,4 @@
 package olapcube.estructura;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,26 +39,37 @@ public class Dimension {
         Dimension dim = new Dimension(configDimension.getNombre());
         dim.columnaFkHechos = configDimension.getColumnaFkHechos();
 
+        for (int j = 0; j < configDimension.getColumnaValor(); j++){ //pongo en cada posic un nuevo map
+            dim.idToValores.add(new HashMap<>());
+            dim.valoresToCeldas.add(new HashMap<>());
+        }
+
         for (String[] datos : configDimension.getDatasetReader().read()) {
             int pkDimension = Integer.parseInt(datos[configDimension.getColumnaKey()]);
-            String valor = datos[configDimension.getColumnaValor()];
-            dim.idToValores.put(pkDimension, valor);
+            String valor = "";
+
+            for (int i = 0; i < configDimension.getColumnaValor(); i++){
+                valor += " | " + datos[configDimension.getColumnaValor() - i];
+                dim.idToValores.get(i).put(pkDimension, valor);
 
             //TODO: CREO que con un for aca sobre los niveles de las dimensiones podemos jerarquizar bien
             // crear los diccionarios de los niveles para valoreToCeldas
             // armar bien idToValores con los nombres bien hechos
-            dim.valoresToCeldas.put(valor, new HashSet<>());
+                dim.valoresToCeldas.get(i).put(valor, new HashSet<>());
+            }
         }
-
         return dim;
     }
 
+
     public Dimension copiar() {
         Dimension nueva = new Dimension(this.nombre);
-        nueva.valoresToCeldas = new HashMap<>();
-        for (String valor : this.valoresToCeldas.keySet()) {
-            nueva.valoresToCeldas.put(valor, this.valoresToCeldas.get(valor));
+        nueva.valoresToCeldas = new ArrayList<>();
+        for (int i=0; i < valoresToCeldas.size(); i++){
+           for (String valor : this.valoresToCeldas.get(i).keySet()) {
+                nueva.valoresToCeldas.get(i).put(valor, this.valoresToCeldas.get(i).get(valor));
         }
+    }
         nueva.idToValores = this.idToValores;
         nueva.columnaFkHechos = this.columnaFkHechos;
     
@@ -74,9 +83,9 @@ public class Dimension {
     public void filtrar(String[] valores){
         HashMap<String, Set<Integer>> nuevosValores = new HashMap<>();
         for (String valor : valores) {
-            nuevosValores.put(valor, valoresToCeldas.get(valor));
+            nuevosValores.put(valor, valoresToCeldas.get(nivelActual).get(valor));
         }
-            valoresToCeldas = nuevosValores;
+            valoresToCeldas.set(nivelActual, nuevosValores);
     }
 
 
@@ -86,11 +95,11 @@ public class Dimension {
     }
 
     public String[] getValores() {
-        return valoresToCeldas.keySet().toArray(new String[0]);
+        return valoresToCeldas.get(nivelActual).keySet().toArray(new String[0]);
     }
 
     public Set<Integer> getIndicesCeldas(String valor) {
-        return valoresToCeldas.get(valor);
+        return valoresToCeldas.get(nivelActual).get(valor);
     }
 
     public String getNombre() {
@@ -98,7 +107,7 @@ public class Dimension {
     }
 
     public String getValorFromId(Integer id) {
-        return idToValores.get(id);
+        return idToValores.get(nivelActual).get(id);
     }
 
     public int getColumnaFkHechos() {
@@ -112,10 +121,30 @@ public class Dimension {
      * @param indiceCelda índice de la celda en el cubo
      */
     public void agregarHecho(int idValor, int indiceCelda) {
-        if (!idToValores.containsKey(idValor)) {
-            throw new IllegalArgumentException("El id " + idValor + " del valor no existe en la dimension " + nombre);
+        for (int j = 0; j < valoresToCeldas.size(); j++){
+            if (!idToValores.get(j).containsKey(idValor)) {
+            throw new IllegalArgumentException("El id " + idValor + " del valor no existe en la dimension " + nombre + "en el nivel" + j);
+           }
         }
         //TODO: iterar sobre cada nivel de valoresToCeldas haciendo lo mismo
-        valoresToCeldas.get(idToValores.get(idValor)).add(indiceCelda);
+        for (int i = 0; i < valoresToCeldas.size(); i++){
+            valoresToCeldas.get(i).get(idToValores.get(i).get(idValor)).add(indiceCelda);
+       }
+    }
+
+    public void rollUp() {
+        if (nivelActual > 0) {
+            nivelActual -= 1;
+        } else {
+            throw new IllegalStateException("No se puede aumentar mas el nivel de jerarquia");
+        }
+    }
+
+    public void drillDown() {
+        if (nivelActual < valoresToCeldas.size() - 2) {
+            nivelActual += 1;
+        } else {
+            throw new IllegalStateException("No se puede disminuir mas el nivel de jerarquia");
+        }
     }
 }

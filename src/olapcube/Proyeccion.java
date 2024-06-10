@@ -12,12 +12,13 @@ import olapcube.estructura.Dimension;
 public class Proyeccion {
     private Cubo cubo;              // Cubo sobre el que se realiza la proyeccion
     private int maxFilas = 10;      // Maximo de filas a mostrar
-    private int maxColumnas = 10;   // Maximo de columnas a mostrar
+    private int maxColumnas = 5;   // Maximo de columnas a mostrar
     private String hecho;           // Hecho a proyectar
     private String medida;          // Medida a proyectar
     
     // Atributos para mostrar en consola
-    private String formatoCelda = "%8.8s";
+    private String formatoCelda = "%-10s";
+    //private String formatoCelda = "%8.8s";
     private String separador = " | ";
 
     /**
@@ -37,7 +38,7 @@ public class Proyeccion {
         if (hecho_esta == false){
             throw new IllegalArgumentException("nombre hecho no encontrado: " + nombre_hecho);
         }
-        this.hecho = nombre_hecho;    // Selecciona el primer hecho por defecto
+        this.hecho = nombre_hecho;    // Selecciona el primer hecho por defecto, modificado
         
         
         boolean medida_esta = false;
@@ -49,7 +50,7 @@ public class Proyeccion {
         if (medida_esta == false){
             throw new IllegalArgumentException("nombre medida no encontrado: " + nombre_medida);
         }
-        this.medida = nombre_medida;         // Selecciona la primera medida por defecto
+        this.medida = nombre_medida;         // Selecciona la primera medida por defecto, modificado
     }
 
     public void seleccionarHecho(String hecho) {

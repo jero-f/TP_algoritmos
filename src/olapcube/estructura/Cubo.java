@@ -136,6 +136,14 @@ public class Cubo {
         celdas.add(celda);
     }
 
+    public void rollUp(String dimension){
+        dimensiones.get(dimension).rollUp();
+    }
+
+    public void drillDown(String dimension){
+        dimensiones.get(dimension).drillDown();
+    }
+
     @Override
     public String toString() {
         return "Cubo [celdas=" + celdas.size() + ", dimensiones=" + dimensiones.keySet() + ", medidas=" + medidas.size() + "]";
@@ -196,4 +204,45 @@ public class Cubo {
         return new Proyeccion(this, nombre_hecho, medida);
     }
 
+    private Cubo copiar(){
+        Cubo cubo = new Cubo();
+        // TODO: mejorar (copia superficial, revisar)
+        cubo.dimensiones = new HashMap<>();
+        for (Dimension dimension : this.dimensiones.values()) {
+            cubo.dimensiones.put(dimension.getNombre(), dimension.copiar());
+        }
+        cubo.medidas = this.medidas;
+        cubo.celdas = this.celdas;
+        cubo.nombresHechos = this.nombresHechos;
+        return cubo;
+    }
+
+
+    public Cubo slice(String nombreDim, String valor) {
+        Cubo cubo = this.copiar();
+        cubo.dimensiones.get(nombreDim).filtrar(valor);
+        return cubo;
+    }
+
+    public Cubo dice(String nombreDim, String[] valores) {
+        Cubo cubo = this.copiar();
+        cubo.dimensiones.get(nombreDim).filtrar(valores);
+        return cubo;
+    }
+
+    public Cubo dice(String nombreDim1, String[] valores1, String nombreDim2, String[] valores2) {
+        Cubo cubo = this.copiar();
+        cubo.dimensiones.get(nombreDim1).filtrar(valores1);
+        cubo.dimensiones.get(nombreDim2).filtrar(valores2);
+        return cubo;
+    }
+    
+    public Cubo dice(String nombreDim1, String[] valores1, String nombreDim2, String[] valores2, String nombreDim3, String[] valores3) {
+        Cubo cubo = this.copiar();
+        cubo.dimensiones.get(nombreDim1).filtrar(valores1);
+        cubo.dimensiones.get(nombreDim2).filtrar(valores2);
+        cubo.dimensiones.get(nombreDim3).filtrar(valores3);
+        return cubo;
+    }
+    
 }
