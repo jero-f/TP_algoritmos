@@ -245,4 +245,8 @@ public class Cubo {
         return cubo;
     }
     
+    public void prueba(){
+        dimensiones.get("POS").prueba();
+        System.out.println(celdas.size());
+    }
 }

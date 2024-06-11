@@ -49,7 +49,7 @@ public class Dimension {
             String valor = "";
 
             for (int i = 0; i < configDimension.getColumnaValor(); i++){
-                valor += " | " + datos[configDimension.getColumnaValor() - i];
+                valor += datos[configDimension.getColumnaValor() - i] + "/";
                 dim.idToValores.get(i).put(pkDimension, valor);
 
             //TODO: CREO que con un for aca sobre los niveles de las dimensiones podemos jerarquizar bien
@@ -65,28 +65,43 @@ public class Dimension {
     public Dimension copiar() {
         Dimension nueva = new Dimension(this.nombre);
         nueva.valoresToCeldas = new ArrayList<>();
-        for (int i=0; i < valoresToCeldas.size(); i++){
-           for (String valor : this.valoresToCeldas.get(i).keySet()) {
-                nueva.valoresToCeldas.get(i).put(valor, this.valoresToCeldas.get(i).get(valor));
+        for (int i = 0; i < valoresToCeldas.size(); i++) {
+            Map<String, Set<Integer>> nuevoMapa = new HashMap<>();
+            for (Map.Entry<String, Set<Integer>> entry : this.valoresToCeldas.get(i).entrySet()) {
+                nuevoMapa.put(entry.getKey(), new HashSet<>(entry.getValue()));
+            }
+            nueva.valoresToCeldas.add(nuevoMapa);
         }
-    }
+       /* nueva.idToValores = new ArrayList<>(this.idToValores.size());
+        for (int i = 0; i < this.idToValores.size(); i++) {
+            nueva.idToValores.add(new HashMap<>(this.idToValores.get(i)));
+        }
+        */
         nueva.idToValores = this.idToValores;
         nueva.columnaFkHechos = this.columnaFkHechos;
-    
+        nueva.nivelActual = this.nivelActual;
         return nueva;
-    }    
+    }
+    
 
     public void filtrar(String valor) {
         filtrar(new String[]{valor});
     }
-
-    public void filtrar(String[] valores){
-        HashMap<String, Set<Integer>> nuevosValores = new HashMap<>();
-        for (String valor : valores) {
-            nuevosValores.put(valor, valoresToCeldas.get(nivelActual).get(valor));
+    
+    public void filtrar(String[] valores) {
+        List<Map<String, Set<Integer>>> nuevosValoresToCeldas = new ArrayList<>();
+        for (int i = 0; i < valoresToCeldas.size(); i++) {
+            nuevosValoresToCeldas.add(new HashMap<>());
         }
-            valoresToCeldas.set(nivelActual, nuevosValores);
+        for (String valor : valores) {
+            if (valoresToCeldas.get(nivelActual).containsKey(valor)) {
+                nuevosValoresToCeldas.get(nivelActual).put(valor, valoresToCeldas.get(nivelActual).get(valor));
+            }
+        }
+        
+        valoresToCeldas = nuevosValoresToCeldas;
     }
+    
 
 
     @Override
@@ -147,4 +162,13 @@ public class Dimension {
             throw new IllegalStateException("No se puede disminuir mas el nivel de jerarquia");
         }
     }
+
+
+    public void prueba(){
+        //for (Integer i: valoresToCeldas.get(2).get("North America/Canada/Alberta/"))
+        //    System.out.println(i);
+        System.out.println(valoresToCeldas.get(0).get("North America/").size());
+    }
 }
+
+

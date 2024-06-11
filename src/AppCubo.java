@@ -20,7 +20,7 @@ public class AppCubo {
             new ConfigDimension[] {
                 ConfigDimension.configCSV("Productos", "src/olapcube/datasets-olap/productos.csv", 0, 3, 0),
                 ConfigDimension.configCSV("Fechas", "src/olapcube/datasets-olap/fechas.csv", 0, 5, 2),
-                ConfigDimension.configCSV("POS", "src/olapcube/datasets-olap/puntos_venta.csv", 0, 4, 1)
+                ConfigDimension.configCSV("POS", "src/olapcube/datasets-olap/puntos_venta.csv", 0, 5, 1)
             }
         );
     }
@@ -35,21 +35,24 @@ public class AppCubo {
         //cubo.drillDown("POS");
         //cubo.drillDown("Productos");
         //cubo.drillDown("Fechas");
+        //cubo.drillDown("Fechas");
         // Proyecciones
-        //Proyeccion proyeccion = cubo.proyectar("cantidad","count");
+        Proyeccion proyeccion = cubo.proyectar("cantidad","count");
         
         // Mostrar Dimension POS (hecho: default)
         //proyeccion.print("POS");
 
         // Mostrar Dimensiones POS vs Fechas (hecho: cantidad)
-        //proyeccion.seleccionarHecho("cantidad");
-        //proyeccion.print("POS", "Fechas");
+        proyeccion.seleccionarHecho("cantidad");
+        proyeccion.print("Productos", "Fechas");
 
         
-        Cubo cuboDice = cubo.dice("Fechas", new String[]{" | 2017"," | 2018"});
-        cuboDice.proyectar("valor_total","suma").print("POS","Fechas");
+        Cubo cuboSlice = cubo.slice("Fechas", "2017/").slice("POS", "North America/");
+        cuboSlice.proyectar("valor_total","count").print("POS","Fechas");
         //cuboDice.dice("POS", new String[]{"Canada", "France"}).proyectar("valor_total","suma").print("POS","Fechas");
     
+        cuboSlice.prueba();
+
         }
     
 }
