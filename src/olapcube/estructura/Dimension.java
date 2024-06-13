@@ -156,19 +156,19 @@ public class Dimension {
     }
 
     public void drillDown() {
-        if (nivelActual < valoresToCeldas.size() - 2) {
+        if (nivelActual < valoresToCeldas.size() - 1) {
             nivelActual += 1;
         } else {
             throw new IllegalStateException("No se puede disminuir mas el nivel de jerarquia");
         }
     }
 
-
+/*
     public void prueba(){
         //for (Integer i: valoresToCeldas.get(2).get("North America/Canada/Alberta/"))
         //    System.out.println(i);
         System.out.println(valoresToCeldas.get(0).get("North America/").size());
-    }
+    } */
 }
 
 

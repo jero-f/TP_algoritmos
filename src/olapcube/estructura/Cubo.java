@@ -244,9 +244,9 @@ public class Cubo {
         cubo.dimensiones.get(nombreDim3).filtrar(valores3);
         return cubo;
     }
-    
+    /*
     public void prueba(){
         dimensiones.get("POS").prueba();
         System.out.println(celdas.size());
-    }
+    } */
 }
