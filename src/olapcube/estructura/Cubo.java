@@ -137,10 +137,16 @@ public class Cubo {
     }
 
     public void rollUp(String dimension){
+        if (!dimensiones.containsKey(dimension)){
+            throw new IllegalArgumentException("Dimensión no hallada en el cubo: " + dimension );
+        }
         dimensiones.get(dimension).rollUp();
     }
 
     public void drillDown(String dimension){
+        if (!dimensiones.containsKey(dimension)){
+            throw new IllegalArgumentException("Dimensión no hallada en el cubo: " + dimension );
+        }
         dimensiones.get(dimension).drillDown();
     }
 
@@ -244,9 +250,4 @@ public class Cubo {
         cubo.dimensiones.get(nombreDim3).filtrar(valores3);
         return cubo;
     }
-    /*
-    public void prueba(){
-        dimensiones.get("POS").prueba();
-        System.out.println(celdas.size());
-    } */
 }

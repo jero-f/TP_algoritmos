@@ -47,15 +47,17 @@ public class Dimension {
         for (String[] datos : configDimension.getDatasetReader().read()) {
             int pkDimension = Integer.parseInt(datos[configDimension.getColumnaKey()]);
             String valor = "";
+            int j = 0;
 
-            for (int i = 0; i < configDimension.getColumnaValor(); i++){
-                valor += datos[configDimension.getColumnaValor() - i] + "/";
-                dim.idToValores.get(i).put(pkDimension, valor);
+            for (int i : configDimension.getColumnasJerarquias()){
+                valor += datos[i] + "/";
+                dim.idToValores.get(j).put(pkDimension, valor);
 
             //TODO: CREO que con un for aca sobre los niveles de las dimensiones podemos jerarquizar bien
             // crear los diccionarios de los niveles para valoreToCeldas
             // armar bien idToValores con los nombres bien hechos
-                dim.valoresToCeldas.get(i).put(valor, new HashSet<>());
+                dim.valoresToCeldas.get(j).put(valor, new HashSet<>());
+                j++;
             }
         }
         return dim;
@@ -72,11 +74,6 @@ public class Dimension {
             }
             nueva.valoresToCeldas.add(nuevoMapa);
         }
-       /* nueva.idToValores = new ArrayList<>(this.idToValores.size());
-        for (int i = 0; i < this.idToValores.size(); i++) {
-            nueva.idToValores.add(new HashMap<>(this.idToValores.get(i)));
-        }
-        */
         nueva.idToValores = this.idToValores;
         nueva.columnaFkHechos = this.columnaFkHechos;
         nueva.nivelActual = this.nivelActual;
@@ -162,13 +159,6 @@ public class Dimension {
             throw new IllegalStateException("No se puede disminuir mas el nivel de jerarquia");
         }
     }
-
-/*
-    public void prueba(){
-        //for (Integer i: valoresToCeldas.get(2).get("North America/Canada/Alberta/"))
-        //    System.out.println(i);
-        System.out.println(valoresToCeldas.get(0).get("North America/").size());
-    } */
 }
 
 

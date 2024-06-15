@@ -18,9 +18,9 @@ public class AppCubo {
                 COLUMNAS_HECHOS
             ),
             new ConfigDimension[] {
-                ConfigDimension.configCSV("Productos", "src/olapcube/datasets-olap/productos.csv", 0, 3, 0),
-                ConfigDimension.configCSV("Fechas", "src/olapcube/datasets-olap/fechas.csv", 0, 5, 2),
-                ConfigDimension.configCSV("POS", "src/olapcube/datasets-olap/puntos_venta.csv", 0, 5, 1)
+                ConfigDimension.configCSV("Productos", "src/olapcube/datasets-olap/productos.csv", 0, 3, 0, new int[]{3,2,1}),
+                ConfigDimension.configCSV("Fechas", "src/olapcube/datasets-olap/fechas.csv", 0, 5, 2, new int[]{5,4,3,2,1}),
+                ConfigDimension.configCSV("POS", "src/olapcube/datasets-olap/puntos_venta.csv", 0, 5, 1, new int[]{5,4,3,2,1})
             }
         );
     }
@@ -33,10 +33,10 @@ public class AppCubo {
 
         cubo.drillDown("POS");
         cubo.drillDown("POS");
-        //cubo.drillDown("POS");
-        //cubo.drillDown("POS");
-        cubo.drillDown("Productos");
-        cubo.drillDown("Productos");
+        cubo.drillDown("POS");
+        cubo.rollUp("POS");
+        //cubo.drillDown("Productos");
+        //cubo.drillDown("Productos");
         //cubo.drillDown("Fechas");
         //cubo.drillDown("Fechas");
         //cubo.drillDown("Fechas");
@@ -51,12 +51,9 @@ public class AppCubo {
         proyeccion.print("POS", "Productos");
 
         
-        //Cubo cuboSlice = cubo.slice("Fechas", "2017/3").slice("POS", "North America/Canada/Alberta/");
-        //cuboSlice.proyectar("cantidad","count").print("POS","Fechas");
-        //cuboDice.dice("POS", new String[]{"Canada", "France"}).proyectar("valor_total","suma").print("POS","Fechas");
-    
-        //cuboSlice.prueba();
-
+        //Cubo cuboSlice = cubo.slice("Fechas", "2017/").slice("POS", "North America/Canada/");
+        //cuboSlice.proyectar("valor_total","suma").print("POS","Fechas");
+        Cubo cuboDice = cubo.dice("POS", new String[]{"North America/Canada/Alberta/", "North America/Canada/Ontario/"}).slice("Fechas", "2017/");
+        cuboDice.proyectar("cantidad","suma").print("POS","Fechas");
         }
-    
 }

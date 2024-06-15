@@ -12,7 +12,8 @@ public class ConfigDimension {
     private int columnaKey;                 // Columna que contiene la clave primaria en el dataset de la dimensión
     private int columnaValor;               // Columna que contiene el valor en el dataset de la dimensión
     private int columnaFkHechos;            // Columna que contiene la clave foránea en el dataset de los hechos
-
+    private int[] columnasJerarquias;       // primer numero = jerarquia mas abstracta, ultimo numero = jerarquia menos abstracta, 
+                                            // columnas en las que están las jerarquias en el dataset de la dimensión
     /**
      * Constructor de la clase
      * 
@@ -22,12 +23,13 @@ public class ConfigDimension {
      * @param columnaValor Columna que contiene el valor en el dataset de la dimensión
      * @param columnaFkHechos Columna que contiene la clave foránea en el dataset de los hechos
      */
-    private ConfigDimension(String nombre, DatasetReader datasetReader, int columnaKey, int columnaValor, int columnaFkHechos) {
+    private ConfigDimension(String nombre, DatasetReader datasetReader, int columnaKey, int columnaValor, int columnaFkHechos, int[] columnasJerarquias) {
         this.nombre = nombre;
         this.datasetReader = datasetReader;
         this.columnaKey = columnaKey;
         this.columnaValor = columnaValor;
         this.columnaFkHechos = columnaFkHechos;
+        this.columnasJerarquias = columnasJerarquias;
     }
 
     /**
@@ -40,8 +42,8 @@ public class ConfigDimension {
      * @param columnaFkHechos Columna que contiene la clave foránea en la tabla de los hechos
      * @return
      */
-    public static ConfigDimension configCSV(String nombre, String filePath, int columnaKey, int columnaValor, int columnaFkHechos) {
-        return new ConfigDimension(nombre, new CSVReader(filePath), columnaKey, columnaValor, columnaFkHechos);
+    public static ConfigDimension configCSV(String nombre, String filePath, int columnaKey, int columnaValor, int columnaFkHechos, int[] columnasJerarquias) {
+        return new ConfigDimension(nombre, new CSVReader(filePath), columnaKey, columnaValor, columnaFkHechos, columnasJerarquias);
     }
 
     public String getNombre() {
@@ -62,5 +64,9 @@ public class ConfigDimension {
 
     public int getColumnaFkHechos() {
         return columnaFkHechos;
+    }
+
+    public int[] getColumnasJerarquias(){
+        return columnasJerarquias;
     }
 }

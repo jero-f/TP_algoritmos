@@ -12,7 +12,7 @@ import olapcube.estructura.Dimension;
 public class Proyeccion {
     private Cubo cubo;              // Cubo sobre el que se realiza la proyeccion
     private int maxFilas = 10;      // Maximo de filas a mostrar
-    private int maxColumnas = 3;   // Maximo de columnas a mostrar
+    private int maxColumnas = 4;   // Maximo de columnas a mostrar
     private String hecho;           // Hecho a proyectar
     private String medida;          // Medida a proyectar
     
@@ -149,7 +149,7 @@ public class Proyeccion {
     }  */
 
     private void printTablaConsola(String[] indice, String[] header, Double[][] valores) {
-        int cellPadding = 2;  // Espacio entre el contenido y el borde de la celda
+        int cellPadding = 1;  // Espacio entre el contenido y el borde de la celda
         String separator = " | ";
     
         // Ajuste de índice y header según maxFilas y maxColumnas
