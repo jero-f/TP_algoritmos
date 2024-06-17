@@ -11,6 +11,11 @@ public class Minimo extends Medida {
         super("Minimo");
     }
 
+    
+    /** 
+     * @param valores
+     * @return double
+     */
     @Override
     public double calcular(List<Double> valores) {
         double min = Double.POSITIVE_INFINITY;

@@ -11,6 +11,11 @@ public class Suma extends Medida {
         super("Suma");
     }
 
+    
+    /** 
+     * @param valores
+     * @return double
+     */
     @Override
     public double calcular(List<Double> valores) {
         double suma = 0;

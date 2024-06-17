@@ -69,10 +69,18 @@ public class Proyeccion {
         this.medida = nombreMedida;         // Selecciona la primera medida por defecto, modificado
     }
 
+    
+    /** 
+     * @param hecho
+     */
     public void seleccionarHecho(String hecho) {
         this.hecho = hecho;
     }
 
+    
+    /** 
+     * @param medida
+     */
     public void seleccionarMedida(String medida) {
         this.medida = medida;
     }

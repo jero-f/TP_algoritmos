@@ -12,6 +12,10 @@ public abstract class Medida {
         this.nombre = nombre;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getNombre() {
         return nombre;
     }

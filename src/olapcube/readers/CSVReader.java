@@ -29,10 +29,18 @@ public class CSVReader implements DatasetReader {
         this.columnas = Arrays.asList(columnas);
     }
 
+    
+    /** 
+     * @return List<String> lista de columnas
+     */
     public List<String> getColumnas() {
         return columnas;
     }
 
+    
+    /** 
+     * @return String[][]
+     */
     @Override
     public String[][] read() {
         List<String[]> rows = new ArrayList<>();
