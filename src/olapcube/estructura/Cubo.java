@@ -105,6 +105,7 @@ public class Cubo {
         dimensiones.put(dim1.getNombre(), dim1);
     }
 
+
     public void agregarCelda(Celda celda) {
         
         boolean mismos_hechos = true;
@@ -131,18 +132,29 @@ public class Cubo {
         celdas.add(celda);
     }
 
+
+    /**
+     * Método que permite aumentar el nivel de jerarquia de una dimensión
+     * @param dimension Dimensión que se va a ver afectada
+     * @throws IllegalArgumentException si la dimension pasada no se encuentra en el cubo
+     */
     public void rollUp(String dimension){
         if (!dimensiones.containsKey(dimension)){
             throw new IllegalArgumentException("Dimensión no hallada en el cubo: " + dimension );
         }
-        dimensiones.get(dimension).rollUp();
+        dimensiones.get(dimension).aumentarJerarquia();
     }
 
+    /**
+     * Método que permite disminuir el nivel de jerarquia de una dimensión
+     * @param dimension Dimensión que se va a ver afectada
+     * @throws IllegalArgumentException si la dimension pasada no se encuentra en el cubo
+     */
     public void drillDown(String dimension){
         if (!dimensiones.containsKey(dimension)){
             throw new IllegalArgumentException("Dimensión no hallada en el cubo: " + dimension );
         }
-        dimensiones.get(dimension).drillDown();
+        dimensiones.get(dimension).disminuirJerarquia();
     }
 
     @Override
@@ -217,26 +229,71 @@ public class Cubo {
         return cubo;
     }
 
-
+    /**
+     * Método que genera un nuevo cubo que unicamente tengo los hechos que cumplan que en la dimensión pasada tengan ese valor
+     * @param nombreDim dimensión en la que se aplica
+     * @param valor valor que deben tener los hechos del nuevo cubo
+     * @return cubo que en esa dimension solo tiene hechos con ese valor
+     * @throws IllegalArgumentException si nombreDim no es una dimensión del cubo
+     */
     public Cubo slice(String nombreDim, String valor) {
+        if (!dimensiones.containsKey(nombreDim)){
+            throw new IllegalArgumentException("Dimensión no hallada en el cubo: " + nombreDim );
+        }
         Cubo cubo = this.copiar();
         cubo.dimensiones.get(nombreDim).filtrar(valor);
         return cubo;
     }
 
+
+        /**
+     * Método que genera un nuevo cubo que unicamente tengo los hechos que cumplan que en la dimensión pasada tengan alguno de esos valores
+     * @param nombreDim dimensión en la que se aplica
+     * @param valor valor que deben tener los hechos del nuevo cubo
+     * @return cubo que en esa dimension solo tiene hechos con esos valores
+     * @throws IllegalArgumentException si nombreDim no es una dimensión del cubo
+     */
     public Cubo dice(String nombreDim, String[] valores) {
+        if (!dimensiones.containsKey(nombreDim)){
+            throw new IllegalArgumentException("Dimensión no hallada en el cubo: " + nombreDim );
+        }
         Cubo cubo = this.copiar();
         cubo.dimensiones.get(nombreDim).filtrar(valores);
         return cubo;
     }
 
+    /**
+    * Método que genera un nuevo cubo que unicamente tengo los hechos que cumplan que en la dimensiones pasadas tengan alguno de esos valores
+    * @param nombreDim dimensión 1
+    * @param valores1 valores que deben tener los hechos del nuevo cubo en la dimension 1
+    * @param nombreDim dimensión 2
+    * @param valores2 valores que deben tener los hechos del nuevo cubo en la dimension 2
+    * @return cubo que en esas dimensiones solo tiene hechos con esos valores
+    * @throws IllegalArgumentException si algun nombreDim no es una dimensión del cubo
+    */
     public Cubo dice(String nombreDim1, String[] valores1, String nombreDim2, String[] valores2) {
+        if (!dimensiones.containsKey(nombreDim1)){
+            throw new IllegalArgumentException("Dimensión no hallada en el cubo: " + nombreDim1 );
+        }
+        if (!dimensiones.containsKey(nombreDim2)){
+            throw new IllegalArgumentException("Dimensión no hallada en el cubo: " + nombreDim2 );
+        }
+
         Cubo cubo = this.copiar();
         cubo.dimensiones.get(nombreDim1).filtrar(valores1);
         cubo.dimensiones.get(nombreDim2).filtrar(valores2);
         return cubo;
     }
-    
+    /**
+    * @param nombreDim dimensión 1
+    * @param valores1 valores que deben tener los hechos del nuevo cubo en la dimension 1
+    * @param nombreDim dimensión 2
+    * @param valores2 valores que deben tener los hechos del nuevo cubo en la dimension 2
+    * @param nombreDim dimensión 3
+    * @param valores3 valores que deben tener los hechos del nuevo cubo en la dimension 3
+    * @return cubo que en esas dimensiones solo tiene hechos con esos valores
+    * @throws IllegalArgumentException si algun nombreDim no es una dimensión del cubo
+    */
     public Cubo dice(String nombreDim1, String[] valores1, String nombreDim2, String[] valores2, String nombreDim3, String[] valores3) {
         Cubo cubo = this.copiar();
         cubo.dimensiones.get(nombreDim1).filtrar(valores1);

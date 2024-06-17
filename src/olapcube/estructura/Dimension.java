@@ -131,7 +131,7 @@ public class Dimension {
     public void agregarHecho(int idValor, int indiceCelda) {
         for (int j = 0; j < valoresToCeldas.size(); j++){
             if (!idToValores.get(j).containsKey(idValor)) {
-            throw new IllegalArgumentException("El id " + idValor + " del valor no existe en la dimension " + nombre + "en el nivel" + j);
+                throw new IllegalArgumentException("El id " + idValor + " del valor no existe en la dimension " + nombre + "en el nivel" + j);
            }
         }
 
@@ -140,15 +140,22 @@ public class Dimension {
        }
     }
 
-    public void rollUp() {
+    /**
+     * Método que permite aumentar la jerarquia de la dimensión
+     * @throws IllegalStateException Si nivelActual ya es 0
+     */
+    public void aumentarJerarquia() {
         if (nivelActual > 0) {
             nivelActual -= 1;
         } else {
             throw new IllegalStateException("No se puede aumentar mas el nivel de jerarquia");
         }
     }
-
-    public void drillDown() {
+    /**
+     * Método que permite disminuir la jerarquia de la dimensión
+     * @throws IllegalStateException Si nivelActual es igual a la cantidad de jerarquias que tiene la dimensión menos uno
+     */
+    public void disminuirJerarquia() {
         if (nivelActual < valoresToCeldas.size() - 1) {
             nivelActual += 1;
         } else {

@@ -3,7 +3,7 @@ package olapcube.metricas;
 import java.util.List;
 
 /**
- * Clase que representa una medida de suma
+ * Clase que representa una medida de cuenta
  */
 public class Count extends Medida {
 

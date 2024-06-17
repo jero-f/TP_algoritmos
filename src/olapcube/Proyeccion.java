@@ -23,34 +23,50 @@ public class Proyeccion {
      * Constructor de la clase
      * 
      * @param cubo Cubo sobre el que se realiza la proyeccion
+     * @param nombreHecho Hecho que se quiere mostrar
+     * @param nombreMedida Medida con la cual se va a calcular
+     * @param maxFilas Cantidad máxima de filas que se quieren proyectar
+     * @param maxColumnas Cantidad máxima de columnas que se quieren proyectar
+     * @throws IllegalArgumentException si nombreHecho no es un hecho válido
+     * @throws IllegalArgumentException si nombreMedida no es una medida válida
+     * @throws IllegalArgumentException si maxFilas es menor a 0
+     * @throws IllegalArgumentException si maxColumnas es menor a 0
      */
-    public Proyeccion(Cubo cubo, String nombre_hecho, String nombre_medida, int maxFilas, int maxColumnas) {
+    public Proyeccion(Cubo cubo, String nombreHecho, String nombreMedida, int maxFilas, int maxColumnas) {
         this.cubo = cubo;
+        
+        if (maxFilas < 0){
+            throw new IllegalArgumentException("Tamaño máximo de filas inválido: " + maxFilas);
+        }
         this.maxFilas = maxFilas;
+
+        if (maxColumnas < 0){
+            throw new IllegalArgumentException("Tamaño máximo de columnas inválido: " + maxColumnas);
+        }
         this.maxColumnas = maxColumnas;
     
         boolean hecho_esta = false;
         for (String hecho : cubo.getNombresHechos()){
-            if (hecho.equals(nombre_hecho)){
+            if (hecho.equals(nombreHecho)){
                 hecho_esta = true;
             }
         }
         if (hecho_esta == false){
-            throw new IllegalArgumentException("nombre hecho no encontrado: " + nombre_hecho);
+            throw new IllegalArgumentException("nombre hecho no encontrado: " + nombreHecho);
         }
-        this.hecho = nombre_hecho;    // Selecciona el primer hecho por defecto, modificado
+        this.hecho = nombreHecho;    // Selecciona el primer hecho por defecto, modificado
         
         
         boolean medida_esta = false;
         for (String medida : cubo.getMedidas()){
-            if (medida.equals(nombre_medida)){
+            if (medida.equals(nombreMedida)){
                 medida_esta = true;
             }
         }
         if (medida_esta == false){
-            throw new IllegalArgumentException("nombre medida no encontrado: " + nombre_medida);
+            throw new IllegalArgumentException("nombre medida no encontrado: " + nombreMedida);
         }
-        this.medida = nombre_medida;         // Selecciona la primera medida por defecto, modificado
+        this.medida = nombreMedida;         // Selecciona la primera medida por defecto, modificado
     }
 
     public void seleccionarHecho(String hecho) {
