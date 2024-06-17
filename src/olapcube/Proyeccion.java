@@ -176,7 +176,7 @@ public class Proyeccion {
         System.out.println();
     
         // Ajustar la línea de separación para que cubra hasta donde terminan los headers
-        int anchoTotal = 0;
+        int anchoTotal = cellPadding;
         for (int j = 0; j < header.length + 1; j++) {
             anchoTotal += anchoColumnas[j] + separador.length();
         }
