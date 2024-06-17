@@ -30,7 +30,6 @@ public class Cubo {
         celdas = new ArrayList<>();
         nombresHechos = new ArrayList<>();
 
-        // TODO: Externalizar esta configuracion
         medidas = new HashMap<>();
         medidas.put("suma", new Suma());
         medidas.put("count", new Count());
@@ -67,9 +66,7 @@ public class Cubo {
 
             // Agrega la celda a las dimensiones
             for (Dimension dimension : cubo.dimensiones.values()) {
-            //TODO: CREO que con un for aca sobre los niveles de las dimensiones podemos jerarquizar bien
-            //guardar en cada diccionario de la lista de valoresToCeldas el indice celda. modificar agregarHecho para que
-            // agregue los hechos a todos los niveles de valoresToCeldas
+
                 int columnaFkHechos = dimension.getColumnaFkHechos();
                 int fk = Integer.parseInt(datos[columnaFkHechos]);
                 dimension.agregarHecho(fk, indiceCelda);
@@ -109,7 +106,7 @@ public class Cubo {
     }
 
     public void agregarCelda(Celda celda) {
-        // TODO: Validar que la celda tenga los mismos hechos que las celdas anteriores
+        
         boolean mismos_hechos = true;
         Set<String> hechos_celda =  celda.getHechos();
         for (String hecho : nombresHechos){
@@ -121,12 +118,10 @@ public class Cubo {
             throw new IllegalArgumentException("Celda con hechos diferentes a las demas");
         }
     
-        // TODO: Validar que la celda tenga la misma cantidad de hechos que los hechos del cubo
         if (hechos_celda.size() != nombresHechos.size()){
             throw new IllegalArgumentException("Celda con cantidad de hechos diferente a las demas");
         }
 
-        // TODO: Validar que la celda tenga la misma cantidad de valores para cada hecho
         int cant = celda.getValores(nombresHechos.get(0)).size();
         for (String hecho : nombresHechos){
             if (cant != celda.getValores(hecho).size()){
@@ -212,7 +207,6 @@ public class Cubo {
 
     private Cubo copiar(){
         Cubo cubo = new Cubo();
-        // TODO: mejorar (copia superficial, revisar)
         cubo.dimensiones = new HashMap<>();
         for (Dimension dimension : this.dimensiones.values()) {
             cubo.dimensiones.put(dimension.getNombre(), dimension.copiar());

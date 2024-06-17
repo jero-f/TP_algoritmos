@@ -40,6 +40,7 @@ public class ConfigDimension {
      * @param columnaKey Columna que contiene la clave primaria en la tabla de la dimensión
      * @param columnaValor Columna que contiene el valor en la tabla de la dimensión
      * @param columnaFkHechos Columna que contiene la clave foránea en la tabla de los hechos
+     * @param columnasJerarquias Columnas que contienen cada nivel de jerarquia en la tabla de la dimensión
      * @return
      */
     public static ConfigDimension configCSV(String nombre, String filePath, int columnaKey, int columnaValor, int columnaFkHechos, int[] columnasJerarquias) {
