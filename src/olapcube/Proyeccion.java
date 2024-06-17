@@ -12,13 +12,16 @@ import olapcube.estructura.Dimension;
 public class Proyeccion {
     private Cubo cubo;              // Cubo sobre el que se realiza la proyeccion
     private int maxFilas = 10;      // Maximo de filas a mostrar
-    private int maxColumnas = 10;   // Maximo de columnas a mostrar
+    private int maxColumnas = 4;   // Maximo de columnas a mostrar
     private String hecho;           // Hecho a proyectar
     private String medida;          // Medida a proyectar
     
     // Atributos para mostrar en consola
+<<<<<<< HEAD
     //private int tamanoCelda = 20;
     private String formatoCelda = "%8.8s";
+=======
+>>>>>>> PruebaNico
     private String separador = " | ";
 
     /**
@@ -38,7 +41,7 @@ public class Proyeccion {
         if (hecho_esta == false){
             throw new IllegalArgumentException("nombre del hecho no encontrado: " + nombre_hecho);
         }
-        this.hecho = nombre_hecho;    // Selecciona el primer hecho por defecto
+        this.hecho = nombre_hecho;    // Selecciona el primer hecho por defecto, modificado
         
         
         boolean medida_esta = false;
@@ -50,7 +53,7 @@ public class Proyeccion {
         if (medida_esta == false){
             throw new IllegalArgumentException("nombre de la medida no encontrado: " + nombre_medida);
         }
-        this.medida = nombre_medida;         // Selecciona la primera medida por defecto
+        this.medida = nombre_medida;         // Selecciona la primera medida por defecto, modificado
     }
     
 
@@ -119,30 +122,89 @@ public class Proyeccion {
      * @param valores Valores de la tabla
      */
 
+<<<<<<< HEAD
     /*
+=======
+>>>>>>> PruebaNico
     private void printTablaConsola(String[] indice, String[] header, Double[][] valores) {
+        int cellPadding = 1;  // Espacio entre el contenido y el borde de la celda
+    
+        // Ajuste de índice y header según maxFilas y maxColumnas
         if (indice.length > maxFilas) {
             indice = Arrays.copyOfRange(indice, 0, maxFilas);
         }
         if (header.length > maxColumnas) {
             header = Arrays.copyOfRange(header, 0, maxColumnas);
         }
-
+    
+        // Crear una lista para los anchos de cada columna
+        int[] anchoColumnas = new int[header.length + 1];
+    
+        // Calcular el ancho máximo de la primera columna (índice)
+        anchoColumnas[0] = cellPadding;
+        for (String s : indice) {
+            if (s.length() + cellPadding > anchoColumnas[0]) {
+                anchoColumnas[0] = s.length() + cellPadding;
+            }
+        }
+    
+        // Calcular el ancho máximo de cada columna del header y valores
+        for (int j = 0; j < header.length; j++) {
+            anchoColumnas[j + 1] = header[j].length() + cellPadding;
+            for (int i = 0; i < indice.length; i++) {
+                if (valores[i][j] != null) {
+                    String valueStr = String.format("%.2f", valores[i][j]);
+                    if (valueStr.length() + cellPadding > anchoColumnas[j + 1]) {
+                        anchoColumnas[j + 1] = valueStr.length() + cellPadding;
+                    }
+                } else {
+                    String naStr = "N/A";
+                    if (naStr.length() + cellPadding > anchoColumnas[j + 1]) {
+                        anchoColumnas[j + 1] = naStr.length() + cellPadding;
+                    }
+                }
+            }
+        }
+    
+        // Construir los formatos para cada columna
+        String[] formatos = new String[anchoColumnas.length];
+        for (int i = 0; i < formatos.length; i++) {
+            formatos[i] = "%-" + anchoColumnas[i] + "s";
+        }
+        String[] formatoNumeros = new String[anchoColumnas.length];
+        for (int i = 1; i < formatoNumeros.length; i++) {
+            formatoNumeros[i] = "%" + anchoColumnas[i] + ".2f";
+        }
+    
         // Print del header
-        System.out.printf(formatoCelda, separador);
-        for (String columna : header) {
-            System.out.printf(formatoCelda, columna);
+        System.out.printf(formatos[0], "");
+        System.out.print(separador);
+        for (int j = 0; j < header.length; j++) {
+            System.out.printf(formatos[j + 1], header[j]);
             System.out.print(separador);
         }
         System.out.println();
-        System.out.println("---------------------------------");
-
+    
+        // Ajustar la línea de separación para que cubra hasta donde terminan los headers
+        int anchoTotal = 0;
+        for (int j = 0; j < header.length + 1; j++) {
+            anchoTotal += anchoColumnas[j] + separador.length();
+        }
+        anchoTotal -= separador.length(); // No necesitamos un separador al final
+    
+        // Imprimir la línea de separación
+        System.out.println(new String(new char[anchoTotal]).replace('\0', '-'));
+    
+        // Mostrar los valores
         for (int i = 0; i < indice.length; i++) {
-            System.out.printf(formatoCelda, indice[i]);
+            System.out.printf(formatos[0], indice[i]);
             System.out.print(separador);
             for (int j = 0; j < header.length; j++) {
-                // TODO: Formatear bien el valor de la celda
-                System.out.printf(formatoCelda, valores[i][j]);
+                if (valores[i][j] != null) {
+                    System.out.printf(formatoNumeros[j + 1], valores[i][j]);
+                } else {
+                    System.out.printf(formatos[j + 1], "N/A");
+                }
                 System.out.print(separador);
             }
             System.out.println();
