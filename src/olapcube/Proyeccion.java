@@ -11,17 +11,12 @@ import olapcube.estructura.Dimension;
  */
 public class Proyeccion {
     private Cubo cubo;              // Cubo sobre el que se realiza la proyeccion
-    private int maxFilas = 10;      // Maximo de filas a mostrar
-    private int maxColumnas = 4;   // Maximo de columnas a mostrar
+    private int maxFilas;      // Maximo de filas a mostrar
+    private int maxColumnas;   // Maximo de columnas a mostrar
     private String hecho;           // Hecho a proyectar
     private String medida;          // Medida a proyectar
     
     // Atributos para mostrar en consola
-<<<<<<< HEAD
-    //private int tamanoCelda = 20;
-    private String formatoCelda = "%8.8s";
-=======
->>>>>>> PruebaNico
     private String separador = " | ";
 
     /**
@@ -29,8 +24,10 @@ public class Proyeccion {
      * 
      * @param cubo Cubo sobre el que se realiza la proyeccion
      */
-    public Proyeccion(Cubo cubo, String nombre_hecho, String nombre_medida) {
+    public Proyeccion(Cubo cubo, String nombre_hecho, String nombre_medida, int maxFilas, int maxColumnas) {
         this.cubo = cubo;
+        this.maxFilas = maxFilas;
+        this.maxColumnas = maxColumnas;
     
         boolean hecho_esta = false;
         for (String hecho : cubo.getNombresHechos()){
@@ -39,7 +36,7 @@ public class Proyeccion {
             }
         }
         if (hecho_esta == false){
-            throw new IllegalArgumentException("nombre del hecho no encontrado: " + nombre_hecho);
+            throw new IllegalArgumentException("nombre hecho no encontrado: " + nombre_hecho);
         }
         this.hecho = nombre_hecho;    // Selecciona el primer hecho por defecto, modificado
         
@@ -51,11 +48,10 @@ public class Proyeccion {
             }
         }
         if (medida_esta == false){
-            throw new IllegalArgumentException("nombre de la medida no encontrado: " + nombre_medida);
+            throw new IllegalArgumentException("nombre medida no encontrado: " + nombre_medida);
         }
         this.medida = nombre_medida;         // Selecciona la primera medida por defecto, modificado
     }
-    
 
     public void seleccionarHecho(String hecho) {
         this.hecho = hecho;
@@ -122,10 +118,6 @@ public class Proyeccion {
      * @param valores Valores de la tabla
      */
 
-<<<<<<< HEAD
-    /*
-=======
->>>>>>> PruebaNico
     private void printTablaConsola(String[] indice, String[] header, Double[][] valores) {
         int cellPadding = 1;  // Espacio entre el contenido y el borde de la celda
     
@@ -186,7 +178,7 @@ public class Proyeccion {
         System.out.println();
     
         // Ajustar la línea de separación para que cubra hasta donde terminan los headers
-        int anchoTotal = 0;
+        int anchoTotal = cellPadding;
         for (int j = 0; j < header.length + 1; j++) {
             anchoTotal += anchoColumnas[j] + separador.length();
         }
@@ -206,92 +198,6 @@ public class Proyeccion {
                     System.out.printf(formatos[j + 1], "N/A");
                 }
                 System.out.print(separador);
-            }
-            System.out.println();
-        }
-    }  */
-
-    private void printTablaConsola(String[] indice, String[] header, Double[][] valores) {
-        int cellPadding = 1;  // Espacio entre el contenido y el borde de la celda
-        String separator = " | ";
-    
-        // Ajuste de índice y header según maxFilas y maxColumnas
-        if (indice.length > maxFilas) {
-            indice = Arrays.copyOfRange(indice, 0, maxFilas);
-        }
-        if (header.length > maxColumnas) {
-            header = Arrays.copyOfRange(header, 0, maxColumnas);
-        }
-    
-        // Crear una lista para los anchos de cada columna
-        int[] columnWidths = new int[header.length + 1];
-    
-        // Calcular el ancho máximo de la primera columna (índice)
-        columnWidths[0] = cellPadding;
-        for (String s : indice) {
-            if (s.length() + cellPadding > columnWidths[0]) {
-                columnWidths[0] = s.length() + cellPadding;
-            }
-        }
-    
-        // Calcular el ancho máximo de cada columna del header y valores
-        for (int j = 0; j < header.length; j++) {
-            columnWidths[j + 1] = header[j].length() + cellPadding;
-            for (int i = 0; i < indice.length; i++) {
-                if (valores[i][j] != null) {
-                    String valueStr = String.format("%.2f", valores[i][j]);
-                    if (valueStr.length() + cellPadding > columnWidths[j + 1]) {
-                        columnWidths[j + 1] = valueStr.length() + cellPadding;
-                    }
-                } else {
-                    String naStr = "N/A";
-                    if (naStr.length() + cellPadding > columnWidths[j + 1]) {
-                        columnWidths[j + 1] = naStr.length() + cellPadding;
-                    }
-                }
-            }
-        }
-    
-        // Construir los formatos para cada columna
-        String[] formats = new String[columnWidths.length];
-        for (int i = 0; i < formats.length; i++) {
-            formats[i] = "%-" + columnWidths[i] + "s";
-        }
-        String[] numberFormats = new String[columnWidths.length];
-        for (int i = 1; i < numberFormats.length; i++) {
-            numberFormats[i] = "%" + columnWidths[i] + ".2f";
-        }
-    
-        // Print del header
-        System.out.printf(formats[0], "");
-        System.out.print(separator);
-        for (int j = 0; j < header.length; j++) {
-            System.out.printf(formats[j + 1], header[j]);
-            System.out.print(separator);
-        }
-        System.out.println();
-    
-        // Ajustar la línea de separación para que cubra hasta donde terminan los headers
-        int totalWidth = 0;
-        for (int j = 0; j < header.length + 1; j++) {
-            totalWidth += columnWidths[j] + separator.length();
-        }
-        totalWidth -= separator.length(); // No necesitamos un separador al final
-    
-        // Imprimir la línea de separación
-        System.out.println(new String(new char[totalWidth]).replace('\0', '-'));
-    
-        // Mostrar los valores
-        for (int i = 0; i < indice.length; i++) {
-            System.out.printf(formats[0], indice[i]);
-            System.out.print(separator);
-            for (int j = 0; j < header.length; j++) {
-                if (valores[i][j] != null) {
-                    System.out.printf(numberFormats[j + 1], valores[i][j]);
-                } else {
-                    System.out.printf(formats[j + 1], "N/A");
-                }
-                System.out.print(separator);
             }
             System.out.println();
         }

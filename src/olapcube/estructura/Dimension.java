@@ -38,20 +38,6 @@ public class Dimension {
     public static Dimension crear(ConfigDimension configDimension) {
         Dimension dim = new Dimension(configDimension.getNombre());
         dim.columnaFkHechos = configDimension.getColumnaFkHechos();
-<<<<<<< HEAD
-        for (String[] datos : configDimension.getDatasetReader().read()) {
-            int pkDimension = Integer.parseInt(datos[configDimension.getColumnaKey()]);
-            String valor = "";
-            int j = 0;
-
-            for (int i : configDimension.getColumnasJerarquias()){
-                valor += datos[i] + "/";
-                dim.idToValores.get(j).put(pkDimension, valor);
-
-            //TODO: CREO que con un for aca sobre los niveles de las dimensiones podemos jerarquizar bien
-            // crear los diccionarios de los niveles para valoreToCeldas
-            // armar bien idToValores con los nombres bien hechos
-=======
 
         for (int j = 0; j < configDimension.getColumnaValor(); j++){ //pongo en cada posic un nuevo map
             dim.idToValores.add(new HashMap<>());
@@ -66,7 +52,6 @@ public class Dimension {
             for (int i : configDimension.getColumnasJerarquias()){
                 valor += datos[i] + "/";
                 dim.idToValores.get(j).put(pkDimension, valor);
->>>>>>> PruebaNico
                 dim.valoresToCeldas.get(j).put(valor, new HashSet<>());
                 j++;
             }
@@ -74,19 +59,6 @@ public class Dimension {
         return dim;
     }
 
-<<<<<<< HEAD
-    public Dimension copiar() {
-        Dimension nueva = new Dimension(this.nombre);
-        nueva.valoresToCeldas = new HashMap<>();
-        for (String valor : this.valoresToCeldas.keySet()) {
-            nueva.valoresToCeldas.put(valor, this.valoresToCeldas.get(valor));
-        }
-        nueva.idToValores = this.idToValores;
-        nueva.columnaFkHechos = this.columnaFkHechos;
-    
-        return nueva;
-    }    
-=======
 
     public Dimension copiar() {
         Dimension nueva = new Dimension(this.nombre);
@@ -104,21 +76,10 @@ public class Dimension {
         return nueva;
     }
     
->>>>>>> PruebaNico
 
     public void filtrar(String valor) {
         filtrar(new String[]{valor});
     }
-<<<<<<< HEAD
-
-    public void filtrar(String[] valores){
-        HashMap<String, Set<Integer>> nuevosValores = new HashMap<>();
-        for (String valor : valores) {
-            nuevosValores.put(valor, valoresToCeldas.get(valor));
-        }
-            valoresToCeldas = nuevosValores;
-    }
-=======
     
     public void filtrar(String[] valores) {
         List<Map<String, Set<Integer>>> nuevosValoresToCeldas = new ArrayList<>();
@@ -134,7 +95,6 @@ public class Dimension {
         valoresToCeldas = nuevosValoresToCeldas;
     }
     
->>>>>>> PruebaNico
 
 
     @Override
@@ -174,11 +134,7 @@ public class Dimension {
             throw new IllegalArgumentException("El id " + idValor + " del valor no existe en la dimension " + nombre + "en el nivel" + j);
            }
         }
-<<<<<<< HEAD
-        //TODO: iterar sobre cada nivel de valoresToCeldas haciendo lo mismo
-=======
 
->>>>>>> PruebaNico
         for (int i = 0; i < valoresToCeldas.size(); i++){
             valoresToCeldas.get(i).get(idToValores.get(i).get(idValor)).add(indiceCelda);
        }
@@ -200,5 +156,4 @@ public class Dimension {
         }
     }
 }
-
 

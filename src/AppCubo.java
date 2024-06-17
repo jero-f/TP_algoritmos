@@ -35,27 +35,20 @@ public class AppCubo {
         cubo.drillDown("POS");
         cubo.drillDown("POS");
         cubo.rollUp("POS");
-        //cubo.drillDown("Productos");
-        //cubo.drillDown("Productos");
+        cubo.drillDown("Productos");
+        cubo.drillDown("Productos");
+        //cubo.rollUp("Productos");
         //cubo.drillDown("Fechas");
         //cubo.drillDown("Fechas");
         //cubo.drillDown("Fechas");
+        //cubo.rollUp("Fechas");
         // Proyecciones
-        Proyeccion proyeccion = cubo.proyectar("valor_total","suma");
+        Proyeccion proyeccion = cubo.proyectar("valor_total","suma", 10, 4);
         
         // Mostrar Dimension POS (hecho: default)
         //proyeccion.print("POS");
 
         // Mostrar Dimensiones POS vs Fechas (hecho: cantidad)
-<<<<<<< HEAD
-        proyeccion.seleccionarHecho("cantidad");
-        proyeccion.print("POS", "Fechas");
-
-        Cubo cuboDice = cubo.dice("Fechas", new String[]{"2017","2018"});
-        cuboDice.dice("POS", new String[]{"Canada", "France"}).proyectar("valor_total","suma").print("POS","Fechas");
-    }
-    
-=======
         proyeccion.seleccionarHecho("valor_total");
         proyeccion.print("POS", "Productos");
 
@@ -63,7 +56,6 @@ public class AppCubo {
         //Cubo cuboSlice = cubo.slice("Fechas", "2017/").slice("POS", "North America/Canada/");
         //cuboSlice.proyectar("valor_total","suma").print("POS","Fechas");
         Cubo cuboDice = cubo.dice("POS", new String[]{"North America/Canada/Alberta/", "North America/Canada/Ontario/"}).slice("Fechas", "2017/");
-        cuboDice.proyectar("cantidad","suma").print("POS","Fechas");
+        cuboDice.proyectar("cantidad","suma", 10, 5).print("POS","Fechas");
         }
->>>>>>> PruebaNico
 }

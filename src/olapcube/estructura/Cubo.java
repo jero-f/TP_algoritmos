@@ -66,13 +66,7 @@ public class Cubo {
 
             // Agrega la celda a las dimensiones
             for (Dimension dimension : cubo.dimensiones.values()) {
-<<<<<<< HEAD
-            //TODO: CREO que con un for aca sobre los niveles de las dimensiones podemos jerarquizar bien
-            //guardar en cada diccionario de la lista de valoresToCeldas el indice celda. modificar agregarHecho para que
-            // agregue los hechos a todos los niveles de valoresToCeldas
-=======
 
->>>>>>> PruebaNico
                 int columnaFkHechos = dimension.getColumnaFkHechos();
                 int fk = Integer.parseInt(datos[columnaFkHechos]);
                 dimension.agregarHecho(fk, indiceCelda);
@@ -112,10 +106,7 @@ public class Cubo {
     }
 
     public void agregarCelda(Celda celda) {
-<<<<<<< HEAD
-=======
         
->>>>>>> PruebaNico
         boolean mismos_hechos = true;
         Set<String> hechos_celda =  celda.getHechos();
         for (String hecho : nombresHechos){
@@ -126,11 +117,7 @@ public class Cubo {
         if (mismos_hechos == false){
             throw new IllegalArgumentException("Celda con hechos diferentes a las demas");
         }
-<<<<<<< HEAD
-
-=======
     
->>>>>>> PruebaNico
         if (hechos_celda.size() != nombresHechos.size()){
             throw new IllegalArgumentException("Celda con cantidad de hechos diferente a las demas");
         }
@@ -214,8 +201,8 @@ public class Cubo {
         return nuevo;
     }
 
-    public Proyeccion proyectar(String nombre_hecho, String medida) {
-        return new Proyeccion(this, nombre_hecho, medida);
+    public Proyeccion proyectar(String nombre_hecho, String medida, int maxFilas, int maxColumnas) {
+        return new Proyeccion(this, nombre_hecho, medida, maxFilas, maxColumnas);
     }
 
     private Cubo copiar(){
@@ -257,9 +244,4 @@ public class Cubo {
         cubo.dimensiones.get(nombreDim3).filtrar(valores3);
         return cubo;
     }
-<<<<<<< HEAD
-    
 }
-=======
-}
->>>>>>> PruebaNico
