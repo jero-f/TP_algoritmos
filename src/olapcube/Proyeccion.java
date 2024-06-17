@@ -17,6 +17,7 @@ public class Proyeccion {
     private String medida;          // Medida a proyectar
     
     // Atributos para mostrar en consola
+    //private int tamanoCelda = 20;
     private String formatoCelda = "%8.8s";
     private String separador = " | ";
 
@@ -117,6 +118,8 @@ public class Proyeccion {
      * @param header Labels o valores de las columnas
      * @param valores Valores de la tabla
      */
+
+    /*
     private void printTablaConsola(String[] indice, String[] header, Double[][] valores) {
         if (indice.length > maxFilas) {
             indice = Arrays.copyOfRange(indice, 0, maxFilas);
@@ -144,5 +147,93 @@ public class Proyeccion {
             }
             System.out.println();
         }
+    }  */
+
+    private void printTablaConsola(String[] indice, String[] header, Double[][] valores) {
+        int cellPadding = 1;  // Espacio entre el contenido y el borde de la celda
+        String separator = " | ";
+    
+        // Ajuste de índice y header según maxFilas y maxColumnas
+        if (indice.length > maxFilas) {
+            indice = Arrays.copyOfRange(indice, 0, maxFilas);
+        }
+        if (header.length > maxColumnas) {
+            header = Arrays.copyOfRange(header, 0, maxColumnas);
+        }
+    
+        // Crear una lista para los anchos de cada columna
+        int[] columnWidths = new int[header.length + 1];
+    
+        // Calcular el ancho máximo de la primera columna (índice)
+        columnWidths[0] = cellPadding;
+        for (String s : indice) {
+            if (s.length() + cellPadding > columnWidths[0]) {
+                columnWidths[0] = s.length() + cellPadding;
+            }
+        }
+    
+        // Calcular el ancho máximo de cada columna del header y valores
+        for (int j = 0; j < header.length; j++) {
+            columnWidths[j + 1] = header[j].length() + cellPadding;
+            for (int i = 0; i < indice.length; i++) {
+                if (valores[i][j] != null) {
+                    String valueStr = String.format("%.2f", valores[i][j]);
+                    if (valueStr.length() + cellPadding > columnWidths[j + 1]) {
+                        columnWidths[j + 1] = valueStr.length() + cellPadding;
+                    }
+                } else {
+                    String naStr = "N/A";
+                    if (naStr.length() + cellPadding > columnWidths[j + 1]) {
+                        columnWidths[j + 1] = naStr.length() + cellPadding;
+                    }
+                }
+            }
+        }
+    
+        // Construir los formatos para cada columna
+        String[] formats = new String[columnWidths.length];
+        for (int i = 0; i < formats.length; i++) {
+            formats[i] = "%-" + columnWidths[i] + "s";
+        }
+        String[] numberFormats = new String[columnWidths.length];
+        for (int i = 1; i < numberFormats.length; i++) {
+            numberFormats[i] = "%" + columnWidths[i] + ".2f";
+        }
+    
+        // Print del header
+        System.out.printf(formats[0], "");
+        System.out.print(separator);
+        for (int j = 0; j < header.length; j++) {
+            System.out.printf(formats[j + 1], header[j]);
+            System.out.print(separator);
+        }
+        System.out.println();
+    
+        // Ajustar la línea de separación para que cubra hasta donde terminan los headers
+        int totalWidth = 0;
+        for (int j = 0; j < header.length + 1; j++) {
+            totalWidth += columnWidths[j] + separator.length();
+        }
+        totalWidth -= separator.length(); // No necesitamos un separador al final
+    
+        // Imprimir la línea de separación
+        System.out.println(new String(new char[totalWidth]).replace('\0', '-'));
+    
+        // Mostrar los valores
+        for (int i = 0; i < indice.length; i++) {
+            System.out.printf(formats[0], indice[i]);
+            System.out.print(separator);
+            for (int j = 0; j < header.length; j++) {
+                if (valores[i][j] != null) {
+                    System.out.printf(numberFormats[j + 1], valores[i][j]);
+                } else {
+                    System.out.printf(formats[j + 1], "N/A");
+                }
+                System.out.print(separator);
+            }
+            System.out.println();
+        }
     }
+    
+    
 }
