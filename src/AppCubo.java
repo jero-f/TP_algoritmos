@@ -18,44 +18,106 @@ public class AppCubo {
                 COLUMNAS_HECHOS
             ),
             new ConfigDimension[] {
-                ConfigDimension.configCSV("Productos", "src/olapcube/datasets-olap/productos.csv", 0, 3, 0, new int[]{3,2,1}),
-                ConfigDimension.configCSV("Fechas", "src/olapcube/datasets-olap/fechas.csv", 0, 5, 2, new int[]{5,4,3,2,1}),
-                ConfigDimension.configCSV("POS", "src/olapcube/datasets-olap/puntos_venta.csv", 0, 5, 1, new int[]{5,4,3,2,1})
+                ConfigDimension.configCSV("Productos", "src/olapcube/datasets-olap/productos.csv", 0, 3, 0, new int[]{3,2,1,0}),
+                ConfigDimension.configCSV("Fechas", "src/olapcube/datasets-olap/fechas.csv", 0, 5, 2, new int[]{5,4,3,2,1,0}),
+                ConfigDimension.configCSV("POS", "src/olapcube/datasets-olap/puntos_venta.csv", 0, 5, 1, new int[]{5,4,3,2,1,0})
             }
         );
     }
-
+    /*
     public static void main(String[] args) {
         ConfigCubo config = crearConfigCubo();
 
         Cubo cubo = Cubo.crearFromConfig(config);
         System.out.println("Cubo creado: " + cubo);
 
-        cubo.drillDown("POS");
-        cubo.drillDown("POS");
-        cubo.drillDown("POS");
-        cubo.rollUp("POS");
-        cubo.drillDown("Productos");
-        cubo.drillDown("Productos");
+        //cubo.drillDown("POS");
+        //cubo.drillDown("POS");
+        //cubo.drillDown("POS");
+        //cubo.drillDown("POS");
+        //cubo.rollUp("POS");
+        //cubo.drillDown("POS");
+        //cubo.drillDown("POS");
+        //cubo.drillDown("Productos");
+        //cubo.drillDown("Productos");
         //cubo.rollUp("Productos");
         //cubo.drillDown("Fechas");
         //cubo.drillDown("Fechas");
         //cubo.drillDown("Fechas");
-        //cubo.rollUp("Fechas");
+        //cubo.drillDown("Fechas");
+        //cubo.drillDown("Fechas");
+        
         // Proyecciones
-        Proyeccion proyeccion = cubo.proyectar("valor_total","suma", 10, 4);
+        Proyeccion proyeccion = cubo.proyectar("valor_total","suma", 10, 3);
         
         // Mostrar Dimension POS (hecho: default)
         //proyeccion.print("POS");
 
         // Mostrar Dimensiones POS vs Fechas (hecho: cantidad)
         //proyeccion.seleccionarHecho("valor_total");
-        proyeccion.print("POS", "Productos");
+        proyeccion.print("POS", "Fechas");
 
         
         //Cubo cuboSlice = cubo.slice("Fechas", "2017/").slice("POS", "North America/Canada/");
         //cuboSlice.proyectar("valor_total","suma").print("POS","Fechas");
-        Cubo cuboDice = cubo.dice("POS", new String[]{"North America/Canada/Alberta/", "North America/Canada/Ontario/"}).slice("Fechas", "2017/");
-        cuboDice.proyectar("cantidad","suma", 10, 5).print("POS","Fechas");
-        }
+        //Cubo cuboDice = cubo.dice("POS", new String[]{"North America/Canada/Alberta/", "North America/Canada/Ontario/"}).slice("Fechas", "2017/");
+        //cuboDice.proyectar("cantidad","suma", 10, 2).print("POS","Fechas");
+    }*/
+
+
+    private static void proyeccionesBase(Cubo cubo) {
+        // Proyecciones
+        Proyeccion proyeccion = cubo.proyectar("valor_total","suma", 10, 3);
+        cubo.drillDown("Fechas");
+        cubo.drillDown("Fechas");
+        cubo.drillDown("POS");
+        cubo.drillDown("Productos");
+        //cubo.drillDown("Productos");
+
+        System.out.println(cubo);
+        
+        // POS (hecho: default)
+        proyeccion.print("POS");
+
+        // POS vs Fechas (hecho: cantidad)
+        proyeccion.seleccionarHecho("cantidad");
+        proyeccion.print("POS", "Fechas");
+
+        // POS vs Productos (hecho: valor_unitario)
+        proyeccion.seleccionarHecho("valor_unitario");
+        proyeccion.print("POS", "Productos");
+
+        // Slice France - Europe
+        Cubo slicedFrance = cubo.slice("POS", "Europe/France/");
+        slicedFrance.proyectar("valor_unitario", "suma", 10, 3).print("POS", "Productos");
+
+        // Slice France - Europe con rollup a Region
+        slicedFrance.rollUp("POS");
+        slicedFrance.proyectar("valor_unitario", "suma", 10, 2).print("POS", "Productos");
+
+        // Slice France - Europe con drilldown a Provincia
+        slicedFrance.drillDown("POS");
+        slicedFrance.drillDown("POS");
+        slicedFrance.proyectar("valor_unitario", "suma", 10, 3).print("POS", "Productos");
+
+        // Cubo original para probar independencia de estructura
+        cubo.rollUp("POS");
+        cubo.proyectar("valor_unitario", "suma", 10, 3).print("POS", "Productos");
+
+        // Dice Europe + Pacific
+        Cubo dicedEuropePacific = cubo.dice("POS", new String[]{"Europe/","Pacific/"});
+        //dicedEuropePacific.rollUp("Fechas");
+        dicedEuropePacific.rollUp("Fechas");
+        dicedEuropePacific.rollUp("Fechas");
+        dicedEuropePacific.proyectar("cantidad", "suma", 10, 3).print("POS", "Fechas");
+    }
+
+    public static void main(String[] args) {
+        ConfigCubo config = crearConfigCubo();
+
+        Cubo cubo = Cubo.crearFromConfig(config);
+        System.out.println(cubo);
+
+        proyeccionesBase(cubo);
+    }
 }

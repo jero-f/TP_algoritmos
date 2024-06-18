@@ -39,7 +39,7 @@ public class Dimension {
         Dimension dim = new Dimension(configDimension.getNombre());
         dim.columnaFkHechos = configDimension.getColumnaFkHechos();
 
-        for (int j = 0; j < configDimension.getColumnaValor(); j++){ //pongo en cada posic un nuevo map
+        for (int j = 0; j < configDimension.getColumnasJerarquias().length; j++){ //pongo en cada posic un nuevo map
             dim.idToValores.add(new HashMap<>());
             dim.valoresToCeldas.add(new HashMap<>());
         }
@@ -91,7 +91,25 @@ public class Dimension {
                 nuevosValoresToCeldas.get(nivelActual).put(valor, valoresToCeldas.get(nivelActual).get(valor));
             }
         }
-        
+
+        // Guardo todos las celdas que cumplian con los filtros
+        Set<Integer> celdas = new HashSet<>(); 
+        for ( Set<Integer> conjunto : nuevosValoresToCeldas.get(nivelActual).values()){
+            for( Integer celda : conjunto){
+                celdas.add(celda);
+            }
+        }
+
+        // Pongo en todas las jerarquias menores a la que se le aplico el filtro los valores que corresponden en cada una
+        for (int j = nivelActual + 1; j < valoresToCeldas.size(); j++) {
+            for (Integer celda : celdas){
+                String valor = idToValores.get(j).get();
+                if (!nuevosValoresToCeldas.get(j).containsKey(valor)) {
+                    nuevosValoresToCeldas.get(j).put(valor, new HashSet<>());
+                }
+                nuevosValoresToCeldas.get(j).get(idToValores.get(j).get(id)).add(celda);
+            }
+        }
         valoresToCeldas = nuevosValoresToCeldas;
     }
     
@@ -149,7 +167,7 @@ public class Dimension {
         if (nivelActual > 0) {
             nivelActual -= 1;
         } else {
-            throw new IllegalStateException("No se puede aumentar mas el nivel de jerarquia");
+            throw new IllegalStateException("No se puede aumentar mas el nivel de jerarquia de la dimensión: " + nombre);
         }
     }
     /**
@@ -160,7 +178,7 @@ public class Dimension {
         if (nivelActual < valoresToCeldas.size() - 1) {
             nivelActual += 1;
         } else {
-            throw new IllegalStateException("No se puede disminuir mas el nivel de jerarquia");
+            throw new IllegalStateException("No se puede disminuir mas el nivel de jerarquia de la dimensión: " + nombre);
         }
     }
 }
