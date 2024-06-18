@@ -19,6 +19,7 @@ public class ConfigHechos {
      * @param nombres Nombres de los hechos
      * @param columnas Columnas de los hechos (columnas con valores del dataset de hechos)
      * @param datasetReader DatasetReader de los hechos
+     * @throws RuntimeException si nombre y columnas no tienen la misma longitud
      */
     private ConfigHechos(String[] nombres, Integer[] columnas, DatasetReader datasetReader) {
         if (nombres.length != columnas.length) {

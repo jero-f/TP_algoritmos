@@ -127,6 +127,7 @@ public class Dimension {
      * 
      * @param idValor id (pk) de la dimensión
      * @param indiceCelda índice de la celda en el cubo
+     * @throws IllegalArgumentException si idValor no está en la dimensión
      */
     public void agregarHecho(int idValor, int indiceCelda) {
         for (int j = 0; j < valoresToCeldas.size(); j++){

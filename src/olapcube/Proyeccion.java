@@ -70,17 +70,11 @@ public class Proyeccion {
     }
 
     
-    /** 
-     * @param hecho
-     */
     public void seleccionarHecho(String hecho) {
         this.hecho = hecho;
     }
 
-    
-    /** 
-     * @param medida
-     */
+
     public void seleccionarMedida(String medida) {
         this.medida = medida;
     }

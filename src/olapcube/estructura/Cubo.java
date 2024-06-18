@@ -213,8 +213,15 @@ public class Cubo {
         return nuevo;
     }
 
-    public Proyeccion proyectar(String nombre_hecho, String medida, int maxFilas, int maxColumnas) {
-        return new Proyeccion(this, nombre_hecho, medida, maxFilas, maxColumnas);
+    /**
+     * @param nombre_hecho hecho a proyectar
+     * @param medida medida a proyectar
+     * @param maxFilas máximo de filas a proyectar
+     * @param maxColumnas máximo de columnas a proyectar
+     * @return Proyeccion del cubo
+     */
+    public Proyeccion proyectar(String nombreHecho, String medida, int maxFilas, int maxColumnas) {
+        return new Proyeccion(this, nombreHecho, medida, maxFilas, maxColumnas);
     }
 
     private Cubo copiar(){
