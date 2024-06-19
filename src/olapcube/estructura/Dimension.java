@@ -15,6 +15,7 @@ public class Dimension {
     private String nombre;                              // Nombre de la dimension
     private List<Map<String, Set<Integer>>> valoresToCeldas;  // Mapeo de valores de la dimensión a celdas en el cubo
     private List<Map<Integer, String>> idToValores;           // Mapeo de ids (pk) de la dimensión a valores
+    private Map<Integer,Integer> celdasToId;        // Mapeo de celdas del cubo a id de la domensión
     private int columnaFkHechos;                    // Columna que contiene la clave foránea en la tabla de los hechos
     private int nivelActual = 0;
     
@@ -27,6 +28,7 @@ public class Dimension {
         this.nombre = nombre;
         valoresToCeldas = new ArrayList<>();
         idToValores = new ArrayList<>();
+        celdasToId = new HashMap<>();
     }
 
     /**
@@ -100,14 +102,18 @@ public class Dimension {
             }
         }
 
-        // Pongo en todas las jerarquias menores a la que se le aplico el filtro los valores que corresponden en cada una
-        for (int j = nivelActual + 1; j < valoresToCeldas.size(); j++) {
-            for (Integer celda : celdas){
-                String valor = idToValores.get(j).get();
-                if (!nuevosValoresToCeldas.get(j).containsKey(valor)) {
-                    nuevosValoresToCeldas.get(j).put(valor, new HashSet<>());
+        // Pongo en las demas jerarquias los valores que corresponden en cada una
+        for (int j = 0; j < valoresToCeldas.size(); j++) {
+            if (j != nivelActual) {
+                
+                for (Integer celda : celdas){
+                    Integer id = celdasToId.get(celda);
+                    String valor = idToValores.get(j).get(id);
+                    if (!nuevosValoresToCeldas.get(j).containsKey(valor)) {
+                        nuevosValoresToCeldas.get(j).put(valor, new HashSet<>());
+                    }
+                    nuevosValoresToCeldas.get(j).get(valor).add(celda);
                 }
-                nuevosValoresToCeldas.get(j).get(idToValores.get(j).get(id)).add(celda);
             }
         }
         valoresToCeldas = nuevosValoresToCeldas;
@@ -141,7 +147,7 @@ public class Dimension {
     }
 
     /**
-     * Método que permite agregar un hecho a la dimensión
+     * Método que permite agregar un hecho a la dimensión e ir mapeando celdasToId
      * 
      * @param idValor id (pk) de la dimensión
      * @param indiceCelda índice de la celda en el cubo
@@ -157,6 +163,7 @@ public class Dimension {
         for (int i = 0; i < valoresToCeldas.size(); i++){
             valoresToCeldas.get(i).get(idToValores.get(i).get(idValor)).add(indiceCelda);
        }
+       celdasToId.put(indiceCelda, idValor);
     }
 
     /**
