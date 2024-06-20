@@ -75,6 +75,7 @@ public class Dimension {
         nueva.idToValores = this.idToValores;
         nueva.columnaFkHechos = this.columnaFkHechos;
         nueva.nivelActual = this.nivelActual;
+        nueva.celdasToId = this.celdasToId;
         return nueva;
     }
     
@@ -108,11 +109,12 @@ public class Dimension {
                 
                 for (Integer celda : celdas){
                     Integer id = celdasToId.get(celda);
-                    String valor = idToValores.get(j).get(id);
-                    if (!nuevosValoresToCeldas.get(j).containsKey(valor)) {
-                        nuevosValoresToCeldas.get(j).put(valor, new HashSet<>());
+                    String valorEnJerarquia = idToValores.get(j).get(id);
+
+                    if (!nuevosValoresToCeldas.get(j).containsKey(valorEnJerarquia)) {
+                        nuevosValoresToCeldas.get(j).put(valorEnJerarquia, new HashSet<>());
                     }
-                    nuevosValoresToCeldas.get(j).get(valor).add(celda);
+                    nuevosValoresToCeldas.get(j).get(valorEnJerarquia).add(celda);
                 }
             }
         }
@@ -123,7 +125,7 @@ public class Dimension {
 
     @Override
     public String toString() {
-        return "Dimension [nombre=" + nombre + "]";
+        return "Dimension " + nombre + ", niveles=" + valoresToCeldas.size() + ", (nivel actual = " + (valoresToCeldas.size() - nivelActual) + ")" ;
     }
 
     public String[] getValores() {

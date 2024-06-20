@@ -17,9 +17,7 @@ public class Proyeccion {
     private String hecho;           // Hecho a proyectar
     private String medida;          // Medida a proyectar
     
-    private String formatoCelda = "%15.15s";
     private String separador = " | ";
-    private DecimalFormat formatoNro = new DecimalFormat("#.#");
 
     /**
      * Constructor de la clase
@@ -222,35 +220,4 @@ public class Proyeccion {
             System.out.println();
         }
     }
-
-    /*private void printTablaConsola(String[] indice, String[] header, Double[][] valores) {
-        if (indice.length > maxFilas) {
-            indice = Arrays.copyOfRange(indice, 0, maxFilas);
-        }
-        if (header.length > maxColumnas) {
-            header = Arrays.copyOfRange(header, 0, maxColumnas);
-        }
-
-        // Print del header
-        System.out.printf(formatoCelda, " ");
-        System.out.print(separador);
-        for (String columna : header) {
-            System.out.printf(formatoCelda, columna);
-            System.out.print(separador);
-        }
-        System.out.println();
-
-        for (int i = 0; i < indice.length; i++) {
-            System.out.printf(formatoCelda, indice[i]);
-            System.out.print(separador);
-            for (int j = 0; j < header.length; j++) {
-                // TODO: Formatear bien el valor de la celda
-                System.out.printf(formatoCelda, formatoNro.format(valores[i][j]));
-                System.out.print(separador);
-            }
-            System.out.println();
-        }
-    }*/
-    
-    
 }

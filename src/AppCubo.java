@@ -18,52 +18,12 @@ public class AppCubo {
                 COLUMNAS_HECHOS
             ),
             new ConfigDimension[] {
-                ConfigDimension.configCSV("Productos", "src/olapcube/datasets-olap/productos.csv", 0, 3, 0, new int[]{3,2,1,0}),
-                ConfigDimension.configCSV("Fechas", "src/olapcube/datasets-olap/fechas.csv", 0, 5, 2, new int[]{5,4,3,2,1,0}),
-                ConfigDimension.configCSV("POS", "src/olapcube/datasets-olap/puntos_venta.csv", 0, 5, 1, new int[]{5,4,3,2,1,0})
+                ConfigDimension.configCSV("Productos", "src/olapcube/datasets-olap/productos.csv", 0, 3, 0, new int[]{3,2,1}),
+                ConfigDimension.configCSV("Fechas", "src/olapcube/datasets-olap/fechas.csv", 0, 5, 2, new int[]{5,4,3,2,1}),
+                ConfigDimension.configCSV("POS", "src/olapcube/datasets-olap/puntos_venta.csv", 0, 5, 1, new int[]{5,4,3,2,1})
             }
         );
     }
-    /*
-    public static void main(String[] args) {
-        ConfigCubo config = crearConfigCubo();
-
-        Cubo cubo = Cubo.crearFromConfig(config);
-        System.out.println("Cubo creado: " + cubo);
-
-        //cubo.drillDown("POS");
-        //cubo.drillDown("POS");
-        //cubo.drillDown("POS");
-        //cubo.drillDown("POS");
-        //cubo.rollUp("POS");
-        //cubo.drillDown("POS");
-        //cubo.drillDown("POS");
-        //cubo.drillDown("Productos");
-        //cubo.drillDown("Productos");
-        //cubo.rollUp("Productos");
-        //cubo.drillDown("Fechas");
-        //cubo.drillDown("Fechas");
-        //cubo.drillDown("Fechas");
-        //cubo.drillDown("Fechas");
-        //cubo.drillDown("Fechas");
-        
-        // Proyecciones
-        Proyeccion proyeccion = cubo.proyectar("valor_total","suma", 10, 3);
-        
-        // Mostrar Dimension POS (hecho: default)
-        //proyeccion.print("POS");
-
-        // Mostrar Dimensiones POS vs Fechas (hecho: cantidad)
-        //proyeccion.seleccionarHecho("valor_total");
-        proyeccion.print("POS", "Fechas");
-
-        
-        //Cubo cuboSlice = cubo.slice("Fechas", "2017/").slice("POS", "North America/Canada/");
-        //cuboSlice.proyectar("valor_total","suma").print("POS","Fechas");
-        //Cubo cuboDice = cubo.dice("POS", new String[]{"North America/Canada/Alberta/", "North America/Canada/Ontario/"}).slice("Fechas", "2017/");
-        //cuboDice.proyectar("cantidad","suma", 10, 2).print("POS","Fechas");
-    }*/
-
 
     private static void proyeccionesBase(Cubo cubo) {
         // Proyecciones
@@ -72,8 +32,6 @@ public class AppCubo {
         cubo.drillDown("Fechas");
         cubo.drillDown("POS");
         cubo.drillDown("Productos");
-        //cubo.drillDown("Productos");
-
         System.out.println(cubo);
         
         // POS (hecho: default)
@@ -93,12 +51,12 @@ public class AppCubo {
 
         // Slice France - Europe con rollup a Region
         slicedFrance.rollUp("POS");
-        slicedFrance.proyectar("valor_unitario", "suma", 10, 2).print("POS", "Productos");
+        slicedFrance.proyectar("valor_unitario", "suma", 20, 3).print("POS", "Productos");
 
         // Slice France - Europe con drilldown a Provincia
         slicedFrance.drillDown("POS");
         slicedFrance.drillDown("POS");
-        slicedFrance.proyectar("valor_unitario", "suma", 10, 3).print("POS", "Productos");
+        slicedFrance.proyectar("valor_unitario", "suma", 20, 3).print("POS", "Productos");
 
         // Cubo original para probar independencia de estructura
         cubo.rollUp("POS");
@@ -110,6 +68,11 @@ public class AppCubo {
         dicedEuropePacific.rollUp("Fechas");
         dicedEuropePacific.rollUp("Fechas");
         dicedEuropePacific.proyectar("cantidad", "suma", 10, 3).print("POS", "Fechas");
+
+        System.out.println(cubo);
+        cubo.drillDown("POS");
+        Cubo cubo2 = cubo.slice("Productos", "Accessories/Bike Racks/").slice("POS", "Europe/Germany/");
+        cubo2.proyectar("costo", "suma", 10, 10).print("POS", "Productos");
     }
 
     public static void main(String[] args) {

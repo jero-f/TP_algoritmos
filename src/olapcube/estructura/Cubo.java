@@ -159,7 +159,13 @@ public class Cubo {
 
     @Override
     public String toString() {
-        return "Cubo [celdas=" + celdas.size() + ", dimensiones=" + dimensiones.keySet() + ", medidas=" + medidas.size() + "]";
+        String out = "*** CUBO ***";
+        out += "\n - Celdas: " + celdas.size();
+        out += "\n - Dimensiones:";
+        for (Dimension dimension : dimensiones.values()) {
+            out += "\n  . " + dimension;
+        }
+        return out;
     }
 
     /**
